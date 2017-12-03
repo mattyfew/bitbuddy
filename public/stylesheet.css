@@ -1,0 +1,19 @@
+* { color: #272D45; font-family: 'Open Sans', sans-serif; }
+
+body { background-color: #C9DEEA; }
+
+label {
+    font-weight: bold;
+    display: block;
+    width: 150px;
+}
+label:after { content: ": " }
+#register-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#register-form input { padding: 20px; }
+#register-form button { display: block; }
+.form-single-input-wrapper { margin: 20px; }
