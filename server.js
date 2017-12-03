@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const compression = require('compression')
 const bodyParser = require('body-parser')
+const db = require('./db/db')
 
 app.use(compression())
 app.use(express.static('public'))
@@ -18,8 +19,16 @@ app.use(express.static('./public'))
 
 app.post('/register-new-user', (req, res) => {
     console.log("in POST /register-new-user", req.body)
-    db.query
+    const { firstname, lastname, username, email, password } = req.body
 
+    db.registerNewUser(firstname, lastname, username, email, password)
+        .then(() => {
+            console.log("in the then!!!");
+        })
+})
+
+app.post('/login-user', (req, res) => {
+    console.log("in POST /login-user", req.body)
 })
 
 app.get('*', function(req, res){

@@ -18,8 +18,10 @@ export default class Registration extends Component {
         this.handleClick = this.handleClick.bind(this)
     }
 
-    handleClick(){
+    handleClick(e){
+        e.preventDefault()
         console.log("running handleClick", this.state);
+
         axios.post('/register-new-user', this.state)
             .then((response) => {
                 console.log("this worked?", response);
@@ -29,7 +31,7 @@ export default class Registration extends Component {
     }
 
     handleChange(e) {
-        this.setState( [e.target.name]: e.target.value,
+        this.setState( { [e.target.name]: e.target.value },
             () => console.log("the new state is: ", this.state)
         )
     }
