@@ -55,6 +55,11 @@ app.post('/register-new-user', (req, res) => {
 
 app.post('/login-user', (req, res) => {
     console.log("in POST /login-user", req.body)
+
+    db.loginUser(req.body.email, req.body.password)
+        .then(results => {
+            console.log("inside the then of the thing");
+        })
 })
 
 app.get('*', function(req, res){

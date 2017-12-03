@@ -23,8 +23,45 @@ exports.registerNewUser = function(firstname, lastname, username, email, passwor
     })
 }
 
-exports.loginUser = function(email, password) {
-    console.log("running loginUser");
-    const q = ''
-    const params = []
+exports.loginUser = function(email, plainTextPassword) {
+    return new Promise (( resolve, reject) => {
+
+        checkForEmailAndGetPassword(email)
+            .then(results => {
+                console.log("we in here", results);
+                if (!results.emailExists) {
+                    reject({ errorMessage: "email does not exist" })
+                } else {
+                    auth.checkPassword(plainTextPassword, results.hashPassword)
+                        .then(doesMatch => {
+                            if (doesMatch) {
+
+                            }
+                    })
+                }
+            })
+    })
+}
+
+function checkForEmailAndGetUserInfo(email) {
+    return new Promise (( resolve, reject) => {
+        const q = `SELECT * FROM users WHERE email = $1`
+        const params = [ email ]
+
+        db.query(q, params)
+            .then(results => {
+                if (results.rows[0]) {
+                    console.log("there is an existing email", results.rows)
+                    resolve({
+                        emailExists: true,
+                        hashPassword: password
+                    })
+                } else {
+                    console.log("there isn't an email", results.rows);
+                    resolve({
+                        emailExists: false
+                    })
+                }
+            })
+    })
 }
