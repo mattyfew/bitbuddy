@@ -26,16 +26,17 @@ exports.registerNewUser = function(firstname, lastname, username, email, passwor
 exports.loginUser = function(email, plainTextPassword) {
     return new Promise (( resolve, reject) => {
 
-        checkForEmailAndGetPassword(email)
-            .then(results => {
-                console.log("we in here", results);
-                if (!results.emailExists) {
+        checkForEmailAndGetUserInfo(email)
+            .then(({ userInfo, emailExists }) => {
+                if (!emailExists) {
                     reject({ errorMessage: "email does not exist" })
                 } else {
-                    auth.checkPassword(plainTextPassword, results.hashPassword)
+                    auth.checkPassword(plainTextPassword, userInfo.password)
                         .then(doesMatch => {
                             if (doesMatch) {
-
+                                resolve(userInfo)
+                            } else {
+                                reject({ errorMessage: 'That is not the right password' })
                             }
                     })
                 }
@@ -44,24 +45,29 @@ exports.loginUser = function(email, plainTextPassword) {
 }
 
 function checkForEmailAndGetUserInfo(email) {
-    return new Promise (( resolve, reject) => {
+    return new Promise ( (resolve, reject) => {
         const q = `SELECT * FROM users WHERE email = $1`
         const params = [ email ]
 
         db.query(q, params)
             .then(results => {
+
+                // NEED TO REFACTOR THIS LOGIC!
                 if (results.rows[0]) {
-                    console.log("there is an existing email", results.rows)
+                    console.log("there is an existing email")
                     resolve({
                         emailExists: true,
-                        hashPassword: password
+                        userInfo: results.rows[0]
                     })
                 } else {
-                    console.log("there isn't an email", results.rows);
+                    console.log("there isn't an email");
                     resolve({
                         emailExists: false
                     })
                 }
+            })
+            .catch(err => {
+                console.log("Something went wrong in checkForEmailAndGetUserInfo", err);
             })
     })
 }

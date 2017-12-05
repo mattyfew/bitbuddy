@@ -40,7 +40,10 @@ if (process.env.NODE_ENV != 'production') {
     }))
 }
 
-app.use(express.static('./public'))
+app.use(express.static('public'))
+
+
+
 
 app.post('/register-new-user', (req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -58,8 +61,30 @@ app.post('/login-user', (req, res) => {
 
     db.loginUser(req.body.email, req.body.password)
         .then(results => {
-            console.log("inside the then of the thing");
+            req.session.user = {
+                id: results.id,
+                firstname: results.firstname,
+                lastname: results.lastname,
+                email: results.email,
+                username: results.username
+            }
+            res.redirect('/')
         })
+        .catch(err => console.log("There was an error in loginUser", err) )
+})
+
+
+app.get('/welcome/', (req, res) => {
+    if (req.session.user) res.redirect('/')
+
+    res.sendFile(__dirname + '/index.html')
+})
+
+
+app.get('/', (req, res) => {
+    if (!req.session.user) res.redirect('/welcome/')
+
+    res.sendFile(__dirname + '/index.html')
 })
 
 app.get('*', function(req, res){
