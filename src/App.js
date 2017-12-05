@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router'
 
 export default class App extends Component {
     constructor(props) {
@@ -34,6 +35,15 @@ export default class App extends Component {
         })
         return (
             <div>
+                <div id="nav-container">
+                    <nav class="bar">
+                        <a href="/#/"><img id="fireball" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/500px-Bitcoin.svg.png" alt="logo" /></a>
+                        <ul>
+                            <li><Link to="/">Home</Link></li>
+                        </ul>
+                    </nav>
+                </div>
+
                 <h1>Welcome to Bitbuddy</h1>
 
                 {children}

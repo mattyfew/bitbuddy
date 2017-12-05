@@ -1,6 +1,6 @@
 * { color: #272D45; font-family: 'Open Sans', sans-serif; }
 
-body { background-color: #C9DEEA; }
+body { background-color: #ecf0f1; margin: 0; }
 
 label {
     font-weight: bold;
@@ -17,3 +17,35 @@ label:after { content: ": " }
 #register-form input { padding: 20px; }
 #register-form button { display: block; }
 .form-single-input-wrapper { margin: 20px; }
+
+/* Nav
+============================*/
+
+#fireball {
+    max-height: 60px;
+    min-width: 60px;
+    min-height: 20px;
+    float: left;
+
+}
+#nav-container {
+    background: #9b59b6;
+}
+nav {
+    content: "";
+    clear: both;
+    display: table;
+}
+.bar {
+    display: flex;
+    align-items: center;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding-left: 5px;
+}
+.search { flex: 1; }
+.search input { width: 100%; }
+nav ul { display: flex; list-style-type: none; }
+nav a { color: white; text-decoration: none; }
+nav a:hover { color: #1C4CB2; }
+nav li { padding-right: 15px; }
