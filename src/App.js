@@ -9,7 +9,8 @@ export default class App extends Component {
             firstname: '',
             lastname: '',
             email: '',
-            username: ''
+            username: '',
+            imgUrl: 'http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg'
         }
     }
 
@@ -25,13 +26,15 @@ export default class App extends Component {
             return (<div>Loading.......</div>)
         }
 
-        const { firstname, lastname, email, username, id } = this.state
+        const { id, firstname, lastname, email, username, imgUrl } = this.state
         const children = React.cloneElement(this.props.children, {
-            firstname, lastname, email, username, id 
+            user: {
+                id, firstname, lastname, email, username, imgUrl
+            }
         })
         return (
             <div>
-                <h1>App</h1>
+                <h1>Welcome to Bitbuddy</h1>
 
                 {children}
             </div>

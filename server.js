@@ -80,6 +80,13 @@ app.get('/get-user-info', (req, res) => {
         })
 })
 
+app.get('/get-other-user-info/:userId', (req, res) => {
+    db.getUserInfo(req.params.userId)
+        .then(userInfo => {
+            res.json(userInfo)
+        })
+})
+
 
 app.get('/welcome/', (req, res) => {
     if (req.session.user) res.redirect('/')
