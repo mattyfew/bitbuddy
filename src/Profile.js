@@ -5,6 +5,8 @@ export default class Profile extends Component {
         super(props)
     }
 
+
+
     render() {
         return (
             <div>
@@ -15,6 +17,14 @@ export default class Profile extends Component {
                 <p>Last Name: {this.props.user.lastname}</p>
                 <p>Email: {this.props.user.email}</p>
                 <p>Username: {this.props.user.username}</p>
+
+                <textarea name="bio" id="bio" cols="30" rows="10"
+                    onChange={this.props.handleChange}
+                    >
+                    {this.props.bio}
+                </textarea>
+
+                <button onClick={this.props.submitEditBio}>Submit Changes</button>
             </div>
         )
     }
