@@ -73,6 +73,13 @@ app.post('/login-user', (req, res) => {
         .catch(err => console.log("There was an error in loginUser", err) )
 })
 
+app.get('/get-user-info', (req, res) => {
+    db.getUserInfo(req.session.user.id)
+        .then(userInfo => {
+            res.json(userInfo)
+        })
+})
+
 
 app.get('/welcome/', (req, res) => {
     if (req.session.user) res.redirect('/')

@@ -71,3 +71,13 @@ function checkForEmailAndGetUserInfo(email) {
             })
     })
 }
+
+exports.getUserInfo = function(userId) {
+    return new Promise( (resolve, reject) => {
+        const q = `SELECT * FROM users WHERE id = $1`
+        const params = [ userId ]
+
+        db.query(q, params)
+            .then(({ rows }) => resolve(rows[0]))
+    })
+}
