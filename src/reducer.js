@@ -7,6 +7,12 @@ const initState = {
 };
 
 export function reducer(state = {}, action) {
+    if (action.type == 'GET_USER_INFO') {
+        return Object.assign({}, state, {
+            user: action.user
+        })
+    }
+
     if (action.type == 'SHOW_BIO_EDITOR') {
         return Object.assign({}, state, {
             bioEditorIsVisible: true

@@ -1,3 +1,19 @@
+import axios from 'axios'
+
+export function getUserInfo() {
+    return axios.get('/get-user-info')
+        .then( ({ data }) => {
+            return {
+                type: 'GET_USER_INFO',
+                user: data
+            }
+        })
+}
+
+export function getOtherUserInfo() {
+
+}
+
 
 
 export function updateBio(bio) {

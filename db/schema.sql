@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS friend_requests;
+DROP TABLE IF EXISTS friendships;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
@@ -13,6 +13,11 @@ CREATE TABLE users(
     create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE friend_requests (
-
+CREATE TABLE friendships (
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER NOT NULL,
+    recipient_id INTEGER NOT NULL,
+    status SMALLINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP
 );

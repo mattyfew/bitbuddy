@@ -49,3 +49,18 @@ nav ul { display: flex; list-style-type: none; }
 nav a { color: white; text-decoration: none; }
 nav a:hover { color: #1C4CB2; }
 nav li { padding-right: 15px; }
+
+
+/* Profile
+============================*/
+
+#banner {
+    max-width: 1200px;
+}
+
+#profile-info {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    max-width: 1000px;
+    margin: 0 auto;
+}

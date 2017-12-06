@@ -2,31 +2,19 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router'
 import { updateBio } from './actions'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
+import { getUserInfo } from './actions'
 
 
 class App extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            id: null,
-            firstname: '',
-            lastname: '',
-            email: '',
-            username: '',
-            bio: '',
-            imgUrl: 'http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg'
-        }
-
         this.handleChange = this.handleChange.bind(this)
         this.submitEditBio = this.submitEditBio.bind(this)
     }
 
     componentDidMount() {
-        axios.get('/get-user-info')
-            .then(({ data: { id, firstname, lastname, email, username, bio } }) => {
-                this.setState({ id, firstname, lastname, email, username, bio })
-            })
+        this.props.dispatch(getUserInfo())
     }
 
     handleChange(e) {
@@ -41,18 +29,16 @@ class App extends Component {
     }
 
     render() {
-        if (!this.state.username) {
+        if (!this.props.user) {
             return (<div>Loading...</div>)
         }
 
-        const { id, firstname, lastname, email, username, bio, imgUrl } = this.state
         const children = React.cloneElement(this.props.children, {
-            user: {
-                id, firstname, lastname, email, username, bio, imgUrl
-            },
+            user: this.props.user,
             handleChange: this.handleChange,
             submitEditBio: this.submitEditBio
         })
+
         return (
             <div>
                 <div id="nav-container">
@@ -60,11 +46,12 @@ class App extends Component {
                         <Link to="/"><img id="fireball" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/500px-Bitcoin.svg.png" alt="logo" /></Link>
                         <ul>
                             <li><Link to="/">Home</Link></li>
+                            <li><Link to="/user/2">user2</Link></li>
+                            <li><Link to="/user/3">user3</Link></li>
+                            <li><Link to="/user/4">user4</Link></li>
                         </ul>
                     </nav>
                 </div>
-
-                <h1>Welcome to Bitbuddy</h1>
 
                 {children}
             </div>
@@ -73,9 +60,9 @@ class App extends Component {
 }
 
 const mapStateToProps = function(state) {
-    console.log("here");
     return {
-        bio: state.user && state.user.bio
+        bio: state.user && state.user.bio,
+        user: state.user
     }
 }
 
