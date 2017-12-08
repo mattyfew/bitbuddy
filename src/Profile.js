@@ -1,10 +1,21 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-export default class Profile extends Component {
+class Profile extends Component {
     constructor(props) {
         super(props)
+
+        this.state = {
+            showUploadImage: false
+        }
+
+        this.toggleShowUploadImage = this.toggleShowUploadImage.bind(this)
     }
 
+    toggleShowUploadImage() {
+        console.log("here");
+        this.setState({ showUploadImage: !this.state.showUploadImage })
+    }
 
 
     render() {
@@ -12,11 +23,19 @@ export default class Profile extends Component {
         return (
             <div>
                 <h1>Profile</h1>
-                <img id="banner" src="/coinbase.png" alt="coinbase" />
+                {/* <img id="banner" src="/coinbase.png" alt="coinbase" /> */}
                 <section id="profile-info">
                     <div className="profile-left">
                         {/* <img src={ imgUrl } alt={ username }/> */}
-                        <img src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt=""/>
+                        <h2>{username}</h2>
+                        <img src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
+                        <p onClick={this.toggleShowUploadImage}>Upload new image</p>
+                        { this.state.showUploadImage &&
+                            <form onSubmit={this.submitUploadImage}>
+                                <p>Upload a new image</p>
+                                <input type="file" placeholder="upload an image" name="file" />
+                            </form>
+                        }
                     </div>
 
                     <div className="profile-right">
@@ -38,3 +57,12 @@ export default class Profile extends Component {
         )
     }
 }
+
+const mapStateToProps = function(state) {
+    return {
+        bio: state.user && state.user.bio,
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(Profile)
