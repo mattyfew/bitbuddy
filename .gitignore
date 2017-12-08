@@ -3,3 +3,4 @@ node_modules
 bundle.js
 package-lock.json
 db/secrets.json
+secrets.json

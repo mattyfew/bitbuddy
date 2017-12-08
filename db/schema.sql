@@ -8,7 +8,7 @@ CREATE TABLE users(
     email VARCHAR(100),
     username VARCHAR(30),
     password VARCHAR(100),
-    profile_pic TEXT,
+    profilepic TEXT,
     bio TEXT,
     create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

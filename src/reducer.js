@@ -7,6 +7,8 @@ const initState = {
 };
 
 export function reducer(state = {}, action) {
+    console.log("running reducer", action.type);
+
     if (action.type == 'GET_USER_INFO') {
         return Object.assign({}, state, {
             user: action.user
@@ -18,6 +20,13 @@ export function reducer(state = {}, action) {
             bioEditorIsVisible: true
         })
     }
+
+    if (action.type == 'UPLOAD_IMAGE') {
+        return Object.assign({}, state, {
+
+        })
+    }
+
     if (action.type == 'UPDATE_BIO') {
         console.log("reducer UPDATE_BIO");
         const user = Object.assign({}, state.user, {

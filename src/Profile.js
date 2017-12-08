@@ -1,20 +1,41 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { uploadImage } from './actions'
 
 class Profile extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            showUploadImage: false
+            showUploadImage: false,
+            profilepic: null
         }
 
         this.toggleShowUploadImage = this.toggleShowUploadImage.bind(this)
+        this.submitUploadImage = this.submitUploadImage.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
 
     toggleShowUploadImage() {
-        console.log("here");
         this.setState({ showUploadImage: !this.state.showUploadImage })
+    }
+
+    submitUploadImage(e) {
+        console.log("about to submit profilepic");
+        e.preventDefault()
+        let formData = new FormData();
+        formData.append('profilepic', this.state.profilepic);
+
+        this.props.dispatch(uploadImage(formData))
+    }
+
+    handleChange(e) {
+        this.setState({
+            [e.target.name]: e.target.files[0]
+
+        }, () => {
+            console.log('new state', this.state);
+        })
     }
 
 
@@ -33,7 +54,8 @@ class Profile extends Component {
                         { this.state.showUploadImage &&
                             <form onSubmit={this.submitUploadImage}>
                                 <p>Upload a new image</p>
-                                <input type="file" placeholder="upload an image" name="file" />
+                                <input onChange={this.handleChange} type="file" placeholder="upload an image" name="profilepic" />
+                                <button type="submit">Submit</button>
                             </form>
                         }
                     </div>

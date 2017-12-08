@@ -14,7 +14,15 @@ export function getOtherUserInfo() {
 
 }
 
-
+export function uploadImage(file) {
+    console.log("running action uploadImage");
+    return axios.post('/uploadImage', file)
+        .then( ({ data }) => {
+            return {
+                type: 'UPLOAD_IMAGE'
+            }
+        })
+}
 
 export function updateBio(bio) {
     return {

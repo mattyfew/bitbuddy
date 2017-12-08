@@ -3,7 +3,12 @@ const app = express()
 const compression = require('compression')
 const bodyParser = require('body-parser')
 const multer = require('multer')
+const uidSafe = require('uid-safe')
+const path = require('path')
+const knox = require('knox')
+const fs = require('fs');
 const db = require('./db/db')
+const s3 = require('./s3')
 
 app.use(compression())
 app.use(express.static('public'))
@@ -14,24 +19,24 @@ app.use(bodyParser.json())
 const cookieSession = require('cookie-session')
 
 var diskStorage = multer.diskStorage({
-  filename: function(req, file, callback) {
-    uidSafe(24).then(function(uid) {
-      callback(null, uid + path.extname(file.originalname))
-    })
-  }
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname))
+        })
+    }
 })
 
 var uploader = multer({
-  storage: diskStorage,
-  limits: {
-    fileSize: 2097152
-  }
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
 })
 
 
 app.use(cookieSession({
-  secret: 'raisins',
-  maxAge: 1000 * 60 * 60 * 24 * 14
+    secret: 'raisins',
+    maxAge: 1000 * 60 * 60 * 24 * 14
 }))
 
 if (process.env.NODE_ENV != 'production') {
@@ -72,6 +77,19 @@ app.post('/login-user', (req, res) => {
         })
         .catch(err => console.log("There was an error in loginUser", err) )
 })
+
+app.post('/uploadImage', uploader.single('profilepic'), function(req, res) {
+    if (req.file) {
+        s3.upload(req.file).then(function() {
+            db.saveImage(req.file.filename, req.session.user.email).then(function(image) {
+                res.json({success: true, image: image});
+            })
+        })
+    } else {
+        res.json({success: false});
+    }
+});
+
 
 app.get('/get-user-info', (req, res) => {
     db.getUserInfo(req.session.user.id)

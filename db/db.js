@@ -1,6 +1,6 @@
 const auth = require('./auth')
 const spicedPg = require('spiced-pg');
-const secrets = require('./secrets.json')
+const secrets = require('../secrets.json')
 const db = spicedPg(`postgres:${secrets.dbUser}:${secrets.dbPassword}@localhost:5432/social_network`);
 
 exports.registerNewUser = function(firstname, lastname, username, email, password) {
@@ -79,5 +79,17 @@ exports.getUserInfo = function(userId) {
 
         db.query(q, params)
             .then(({ rows }) => resolve(rows[0]))
+    })
+}
+
+
+exports.saveImage = function(image, email) {
+    const q = 'UPDATE users SET profilepic = $1 WHERE email = $2 RETURNING profilepic'
+    const params = [ image, email ]
+    return db.query(q, params).then(function(results) {
+        // results.rows.forEach(function(row) {
+        //     row.profilepic = config.s3Url + row.profilepic;
+        // })
+        return results.rows[0]
     })
 }
