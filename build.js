@@ -1,37 +1,43 @@
 const webpack = require('webpack');
 
-const plugins = [
-    new webpack.DefinePlugin({
-        "process.env": {
-            NODE_ENV: JSON.stringify("production")
-        }
-   })
-];
+const plugins = [];
 
 if (require.main == module) {
-    plugins.push(new webpack.optimize.UglifyJsPlugin({
-       compress: {
-           warnings: false
-       }
-    }));
+    plugins.push(
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
+    );
 }
 
 const conf = {
     entry: ['babel-polyfill', __dirname + '/src/start.js'],
     output: {
-        path: __dirname + '/public/',
+        path: __dirname,
         filename: 'bundle.js'
     },
     plugins: plugins,
     module: {
-        loaders: [{
-            test:  /\.js$/,
-            loader: 'babel-loader',
-            query: {
-                presets: [['es2015'], ['react']],
-                plugins: ['transform-async-to-generator']
+        loaders: [
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                query: {
+                    presets: [['es2015'], ['react']],
+                    plugins: [
+                        'transform-async-to-generator',
+                        'transform-object-rest-spread'
+                    ]
+                }
             }
-        }]
+        ]
     }
 };
 

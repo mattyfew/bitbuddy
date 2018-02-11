@@ -9,6 +9,9 @@ const knox = require('knox')
 const fs = require('fs');
 const db = require('./db/db')
 const s3 = require('./s3')
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+const { getSessionFromSocket } = require('socket-cookie-session')
 
 app.use(compression())
 app.use(express.static('public'))
@@ -25,29 +28,54 @@ var diskStorage = multer.diskStorage({
         })
     }
 })
-
 var uploader = multer({
     storage: diskStorage,
     limits: {
         fileSize: 2097152
     }
 })
-
-
 app.use(cookieSession({
     secret: 'raisins',
     maxAge: 1000 * 60 * 60 * 24 * 14
 }))
-
 if (process.env.NODE_ENV != 'production') {
-    app.use('/bundle.js', require('http-proxy-middleware')({
-        target: 'http://localhost:8081/'
-    }))
+    app.use(
+        '/bundle.js',
+        require('http-proxy-middleware')({
+            target: 'http://localhost:8081/'
+        })
+    );
+} else {
+    app.use('/bundle.js', (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-
 app.use(express.static('public'))
 
+io.on('connection', function(socket) {
+    console.log("ajds;");
+    console.log(`socket with the id ${socket.id} is now connected`)
+    const session = getSessionFromSocket(socket, {
+        secret: 'a very secretive secret'
+    })
 
+    if (!session || !session.user) {
+        return socket.disconnect(true);
+    }
+
+    const userId = session.user.id;
+
+
+    socket.on('disconnect', function() {
+        console.log(`socket with the id ${socket.id} is now disconnected`)
+    })
+
+    socket.on('thanks', function(data) {
+        console.log(data)
+    })
+
+    socket.emit('welcome', {
+        message: 'Welome. It is nice to see you'
+    })
+})
 
 
 app.post('/register-new-user', (req, res) => {
@@ -123,6 +151,6 @@ app.get('*', function(req, res){
     res.sendFile(__dirname + '/index.html')
 })
 
-app.listen(process.env.PORT || 8080, function() {
+server.listen(process.env.PORT || 8080, function() {
     console.log("I'm listening on port 8080.")
 })

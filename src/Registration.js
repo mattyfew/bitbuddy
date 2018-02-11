@@ -24,7 +24,8 @@ export default class Registration extends Component {
 
         axios.post('/register-new-user', this.state)
             .then((response) => {
-                console.log("this worked?", response);
+                console.log("success, redirecting to /", response);
+                location.replace('/')
             })
 
         this.setState({ firstname: '', lastname: '', email: '', username: '', password: '' })

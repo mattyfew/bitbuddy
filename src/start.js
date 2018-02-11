@@ -6,6 +6,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import reduxPromise from 'redux-promise'
 import { reducer } from './reducer'
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 import Welcome from './Welcome'
 import Login from './Login'
@@ -13,38 +14,21 @@ import Registration from './Registration'
 import App from './App';
 import Profile from './Profile'
 import OtherProfile from './OtherProfile'
+import Chat from './Chat'
 
-const store = createStore(reducer, applyMiddleware(reduxPromise))
+import { initSocket } from './socket';
 
-let router
 
-const notLoggedInRouter = (
-    <Router history={hashHistory}>
-        <Route path="/" component={Welcome}>
-            <Route path="/login" component={Login} />
-            <IndexRoute component={Registration} />
-  	     </Route>
-    </Router>
-)
 
-const loggedInRouter = (
-    <Provider store={store}>
-        <Router history={browserHistory}>
-            <Route path="/" component={App}>
-                <IndexRoute component={Profile} />
-                <Route path="/user/:userId" component={OtherProfile} />
-        	     </Route>
-        </Router>
-    </Provider>
-)
-
+let elem
 if (location.pathname === '/welcome/') {
-    router = notLoggedInRouter
+    elem = <Welcome />
 } else {
-    router = loggedInRouter
+    // const store = createStore(reducer, applyMiddleware(reduxPromise))
+
+    const store = createStore(reducer, composeWithDevTools(applyMiddleware(reduxPromise)));
+    initSocket()
+    elem = <Provider store={store}><App /></Provider>
 }
 
-
-
-
-ReactDOM.render(router, document.querySelector('main'))
+ReactDOM.render(elem, document.querySelector('main'))
