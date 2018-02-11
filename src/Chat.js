@@ -13,12 +13,10 @@ class Chat extends React.Component {
 
 const ChatMessage = ({ message }) => {
     return (
-        <div className="message">
-            <div className="pic"><img src={message.image} /></div>
+        <div style={styles.chatMessage} className="chat-message">
             <div className="msg">
                 <div>
                     <span className="user-name">{message.first} {message.last}</span>
-                    <span className="date">{message.timestamp}</span>
                 </div>
                 {message.message}
             </div>
@@ -75,9 +73,15 @@ class ChatMessages extends Component {
 
 const styles = {
     container: {
-        backgroundColor: 'red',
-        height: 300,
-        weight: 300
+        backgroundColor: '#d1d8e0',
+        width: '80%',
+        margin: '16px auto',
+        padding: '20px 30px'
+    },
+    chatMessage: {
+        backgroundColor: '#2bcbba',
+        padding: '16px',
+        margin: '16px'
     }
 }
 
