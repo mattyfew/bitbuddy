@@ -45,10 +45,10 @@ class App extends Component {
                                  <Link to="/"><img id="fireball" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/500px-Bitcoin.svg.png" alt="logo" /></Link>
                                  <ul>
                                      <li><Link to="/">Home</Link></li>
+                                     <li><Link to="/chat">Chat</Link></li>
                                      <li><Link to="/user/2">user2</Link></li>
                                      <li><Link to="/user/3">user3</Link></li>
                                      <li><Link to="/user/4">user4</Link></li>
-                                     <li><Link to="/chat">somehing</Link></li>
                                  </ul>
                              </nav>
                          </div>
