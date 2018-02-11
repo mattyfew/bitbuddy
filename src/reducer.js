@@ -34,5 +34,17 @@ export function reducer(state = {}, action) {
         })
         return Object.assign({}, state, { user });
     }
+
+    if (action.type == 'CHAT_MESSAGES') {
+        state = Object.assign({}, state, {
+            chatMessages: action.messages
+        })
+        console.log("CHAT_MESSAGES reducer", state);
+    }
+    if (action.type == 'CHAT_MESSAGE') {
+        state = Object.assign({}, state, {
+            chatMessages: [...state.chatMessages, action.message]
+        })
+    }
     return state;
 }

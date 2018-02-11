@@ -50,30 +50,72 @@ if (process.env.NODE_ENV != 'production') {
 }
 app.use(express.static('public'))
 
+
+let onlineUsers = [], messages = [
+    {
+        id: 1,
+        first: 'matt',
+        last: 'matt',
+        message: 'IT WORKED!',
+        timestamp: 'whatever timesdf',
+        image: null
+    },
+    {
+        id: 2,
+        first: 'matt',
+        last: 'matt',
+        message: 'IT WORKED!',
+        timestamp: 'whatever time',
+        image: null
+    }
+]
+
+const getOnlineUsers = () => {
+    let ids = onlineUsers.map(item => item.id)
+
+    //here we are filtering the ids
+    ids = ids.filter((id, i) => ids.indexOf(id) == i)
+    return users.getByIds(ids)
+}
+
 io.on('connection', function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`)
-    // const session = getSessionFromSocket(socket, {
-    //     secret: 'a very secretive secret'
-    // })
-    //
-    // if (!session || !session.user) {
-    //     return socket.disconnect(true);
-    // }
-    // 
-    // const userId = session.user.id;
+    const session = getSessionFromSocket(socket, { secret: 'raisins', })
+
+    if (!session || !session.user) { return socket.disconnect(true); }
 
 
-    socket.on('disconnect', function() {
+    // some() returns a boolean based on if one of the elements in the
+    // array passes the condition specified in the callback.
+    // we use it here to check if the socket.id is already in the list of
+    // online users, we don't want them to go any farther
+    if (onlineUsers.some(item => item.socketId == socket.id)) { return }
+
+    const userId = session.user.id;
+
+    socket.emit('chats', messages)
+
+    onlineUsers.push({
+        id: session.user.id,
+        socketId: socket.id
+    })
+
+    socket.on('disconnect', () => {
         console.log(`socket with the id ${socket.id} is now disconnected`)
     })
 
-    socket.on('thanks', function(data) {
-        console.log(data)
-    })
+    socket.on('chat', msg => {
+        console.log("inside chat", msg);
+        const sender = onlineUsers.find(user => user.socketId == socket.id)
 
-    socket.emit('welcome', {
-        message: 'Welome. It is nice to see you'
-    })
+        users.getByIds([ sender.id ]).then(([data]) => {
+            data.message = msg.message;
+            data.timestamp = new Date().toLocaleString();
+            messages.push(data);
+            messages = messages.slice(-10);
+            io.sockets.emit('chat', data)
+        });
+    });
 })
 
 

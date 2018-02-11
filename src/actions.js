@@ -2,10 +2,10 @@ import axios from 'axios'
 
 export function getUserInfo() {
     return axios.get('/get-user-info')
-        .then( ({ data }) => {
+        .then( ({ user }) => {
             return {
                 type: 'GET_USER_INFO',
-                user: data
+                user
             }
         })
 }
@@ -27,12 +27,26 @@ export function uploadImage(file) {
 export function updateBio(bio) {
     return {
         type: 'UPDATE_BIO',
-        bio: bio
+        bio
     }
 }
 
 export function fetchFriends() {
     return {
         type: 'FETCH_FRIENDS'
+    }
+}
+
+export function chatMessages (messages) {
+    return {
+        type: 'CHAT_MESSAGES',
+        messages
+    }
+}
+
+export function chatMessage ({ message }) {
+    return {
+        type: 'CHAT_MESSAGE',
+        message
     }
 }

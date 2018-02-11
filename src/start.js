@@ -27,7 +27,7 @@ if (location.pathname === '/welcome/') {
     // const store = createStore(reducer, applyMiddleware(reduxPromise))
 
     const store = createStore(reducer, composeWithDevTools(applyMiddleware(reduxPromise)));
-    initSocket()
+    initSocket(store)
     elem = <Provider store={store}><App /></Provider>
 }
 
