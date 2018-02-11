@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom'
 import { updateBio } from './actions'
 import { connect } from 'react-redux'
 import { getUserInfo } from './actions'
@@ -9,7 +9,7 @@ import Profile from './Profile'
 import OtherProfile from './OtherProfile'
 import Chat from './Chat'
 
-export default class App extends Component {
+class App extends Component {
     constructor(props) {
         super(props)
         this.handleChange = this.handleChange.bind(this)
@@ -17,7 +17,7 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        // this.props.dispatch(getUserInfo())
+        this.props.dispatch(getUserInfo())
     }
 
     handleChange(e) {
@@ -28,13 +28,13 @@ export default class App extends Component {
     }
 
     submitEditBio() {
-        // this.props.dispatch(updateBio(this.state.bio))
+        this.props.dispatch(updateBio(this.state.bio))
     }
 
     render() {
-        // if (!this.props.user) {
-        //     return (<div>Loading...</div>)
-        // }
+        if (!this.props.user) {
+            return (<div>Loading...</div>)
+        }
 
         return (
             <div>
@@ -65,11 +65,11 @@ export default class App extends Component {
     }
 }
 
-// const mapStateToProps = function(state) {
-//     return {
-//         bio: state.user && state.user.bio,
-//         user: state.user
-//     }
-// }
-//
-// export default connect(mapStateToProps)(App)
+const mapStateToProps = function(state) {
+    return {
+        bio: state.user && state.user.bio,
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(App)

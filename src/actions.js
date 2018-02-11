@@ -1,11 +1,12 @@
 import axios from 'axios'
 
 export function getUserInfo() {
+
     return axios.get('/get-user-info')
-        .then( ({ user }) => {
+        .then( user => {
             return {
                 type: 'GET_USER_INFO',
-                user
+                user: user.data
             }
         })
 }

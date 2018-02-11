@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router'
 
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -9,13 +8,7 @@ import { reducer } from './reducer'
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import Welcome from './Welcome'
-import Login from './Login'
-import Registration from './Registration'
-import App from './App';
-import Profile from './Profile'
-import OtherProfile from './OtherProfile'
-import Chat from './Chat'
-
+import App from './App'
 import { initSocket } from './socket';
 
 

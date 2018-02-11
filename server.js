@@ -75,7 +75,7 @@ const getOnlineUsers = () => {
 
     //here we are filtering the ids
     ids = ids.filter((id, i) => ids.indexOf(id) == i)
-    return users.getByIds(ids)
+    return db.getUsersByIds(ids)
 }
 
 io.on('connection', function(socket) {
@@ -83,7 +83,6 @@ io.on('connection', function(socket) {
     const session = getSessionFromSocket(socket, { secret: 'raisins', })
 
     if (!session || !session.user) { return socket.disconnect(true); }
-
 
     // some() returns a boolean based on if one of the elements in the
     // array passes the condition specified in the callback.
@@ -99,6 +98,7 @@ io.on('connection', function(socket) {
         id: session.user.id,
         socketId: socket.id
     })
+    console.log("onlineUsers", onlineUsers);
 
     socket.on('disconnect', () => {
         console.log(`socket with the id ${socket.id} is now disconnected`)
@@ -106,15 +106,18 @@ io.on('connection', function(socket) {
 
     socket.on('chat', msg => {
         console.log("inside chat", msg);
-        const sender = onlineUsers.find(user => user.socketId == socket.id)
+        io.sockets.emit('chat', data)
 
-        users.getByIds([ sender.id ]).then(([data]) => {
-            data.message = msg.message;
-            data.timestamp = new Date().toLocaleString();
-            messages.push(data);
-            messages = messages.slice(-10);
-            io.sockets.emit('chat', data)
-        });
+        // const sender = onlineUsers.find(user => user.socketId == socket.id)
+        //
+        // users.getByIds([ sender.id ]).then(([data]) => {
+        //     data.message = msg.message;
+        //     data.timestamp = new Date().toLocaleString();
+        //     messages.push(data);
+        //     messages = messages.slice(-10);
+        //     io.sockets.emit('chat', data)
+        // });
+
     });
 })
 
@@ -159,7 +162,6 @@ app.post('/uploadImage', uploader.single('profilepic'), function(req, res) {
     }
 });
 
-
 app.get('/get-user-info', (req, res) => {
     db.getUserInfo(req.session.user.id)
         .then(userInfo => {
@@ -174,13 +176,11 @@ app.get('/get-other-user-info/:userId', (req, res) => {
         })
 })
 
-
 app.get('/welcome/', (req, res) => {
     if (req.session.user) res.redirect('/')
 
     res.sendFile(__dirname + '/index.html')
 })
-
 
 app.get('/', (req, res) => {
     if (!req.session.user) res.redirect('/welcome/')

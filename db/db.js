@@ -86,10 +86,19 @@ exports.getUserInfo = function(userId) {
 exports.saveImage = function(image, email) {
     const q = 'UPDATE users SET profilepic = $1 WHERE email = $2 RETURNING profilepic'
     const params = [ image, email ]
-    return db.query(q, params).then(function(results) {
+    return db.query(q, params).then(results => {
         // results.rows.forEach(function(row) {
         //     row.profilepic = config.s3Url + row.profilepic;
         // })
         return results.rows[0]
+    })
+}
+
+exports.getUsersByIds = function(ids) {
+    const q = 'SELECT * FROM users WHERE id = ANY($1)'
+    const params = [ids]
+    return db.query(q, params).then(results => {
+        console.log(results.rows);
+        return results.rows
     })
 }
