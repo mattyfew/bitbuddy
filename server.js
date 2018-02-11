@@ -81,7 +81,6 @@ io.on('connection', function(socket) {
         id: session.user.id,
         socketId: socket.id
     })
-    console.log("onlineUsers", onlineUsers);
 
     socket.on('disconnect', () => {
         console.log(`socket with the id ${socket.id} is now disconnected`)
@@ -96,9 +95,6 @@ io.on('connection', function(socket) {
             singleChatMessage.timestamp = new Date().toLocaleString()
             messages.push(singleChatMessage)
             messages = messages.slice(-10) // limits to just 10 messages
-
-            console.log("messages", messages)
-            console.log("singleChatMessage", singleChatMessage)
             io.sockets.emit('chat', singleChatMessage)
         })
     })

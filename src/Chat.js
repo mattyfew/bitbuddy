@@ -51,7 +51,6 @@ class ChatMessages extends Component {
     }
 
     renderChatMessages() {
-        console.log("mahhh props", this.props.messages);
         return this.props.messages.map((msg, i) => <ChatMessage key={ i } message={ msg } />)
     }
 
@@ -86,7 +85,6 @@ const styles = {
 }
 
 function mapStateToProps(state) {
-    console.log("mapStateToProps", state)
     return {
         messages: state.chatMessages
     }

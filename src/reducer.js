@@ -7,8 +7,6 @@ const initState = {
 };
 
 export function reducer(state = {}, action) {
-    console.log("running reducer", action.type);
-
     if (action.type == 'GET_USER_INFO') {
         return Object.assign({}, state, {
             user: action.user
@@ -28,7 +26,6 @@ export function reducer(state = {}, action) {
     }
 
     if (action.type == 'UPDATE_BIO') {
-        console.log("reducer UPDATE_BIO");
         const user = Object.assign({}, state.user, {
             bio: action.bio
         })
@@ -39,11 +36,8 @@ export function reducer(state = {}, action) {
         state = Object.assign({}, state, {
             chatMessages: action.messages
         })
-        console.log("CHAT_MESSAGES reducer", state);
     }
     if (action.type == 'CHAT_MESSAGE') {
-        console.log("INCOMING ", action);
-        const newChats = state.chatMessages.concat(action.message)
         state = Object.assign({}, state, {
             chatMessages: [...state.chatMessages, action.message]
         })
