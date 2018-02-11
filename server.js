@@ -51,17 +51,16 @@ if (process.env.NODE_ENV != 'production') {
 app.use(express.static('public'))
 
 io.on('connection', function(socket) {
-    console.log("ajds;");
     console.log(`socket with the id ${socket.id} is now connected`)
-    const session = getSessionFromSocket(socket, {
-        secret: 'a very secretive secret'
-    })
-
-    if (!session || !session.user) {
-        return socket.disconnect(true);
-    }
-
-    const userId = session.user.id;
+    // const session = getSessionFromSocket(socket, {
+    //     secret: 'a very secretive secret'
+    // })
+    //
+    // if (!session || !session.user) {
+    //     return socket.disconnect(true);
+    // }
+    // 
+    // const userId = session.user.id;
 
 
     socket.on('disconnect', function() {

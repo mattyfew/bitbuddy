@@ -5,7 +5,6 @@ import * as io from 'socket.io-client';
 let socket
 export function initSocket(store) {
     if (!socket) {
-        console.log("attempting to connect to socket");
         socket = io.connect();
         socket.on('onlineUsers', users => store.dispatch(onlineUsers(users)));
         socket.on('onlineUser', user => store.dispatch(onlineUser(user)));
@@ -14,7 +13,7 @@ export function initSocket(store) {
         socket.on('chat', message => store.dispatch(chatMessage(message)));
 
         socket.on('welcome', function(data) {
-            console.log(data);
+            console.log("merping", data);
             socket.emit('thanks', {
               	message: 'Thank you. It is great to be here.'
             })
