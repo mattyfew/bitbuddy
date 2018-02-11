@@ -74,7 +74,7 @@ function checkForEmailAndGetUserInfo(email) {
 
 exports.getUserInfo = function(userId) {
     return new Promise( (resolve, reject) => {
-        const q = `SELECT * FROM users WHERE id = $1`
+        const q = `SELECT id, firstname, lastname, email, username, profilepic FROM users WHERE id = $1`
         const params = [ userId ]
 
         db.query(q, params)
@@ -95,7 +95,11 @@ exports.saveImage = function(image, email) {
 }
 
 exports.getUsersByIds = function(ids) {
-    const q = 'SELECT * FROM users WHERE id = ANY($1)'
+    const q = `
+        SELECT id, firstname, lastname, email, username, profilepic
+        FROM users
+        WHERE id = ANY($1)
+    `
     const params = [ids]
     return db.query(q, params).then(results => {
         console.log(results.rows);

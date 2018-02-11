@@ -16,7 +16,7 @@ const ChatMessage = ({ message }) => {
         <div style={styles.chatMessage} className="chat-message">
             <div className="msg">
                 <div>
-                    <span className="user-name">{message.first} {message.last}</span>
+                    <span className="user-name">{message.firstname} {message.lastname}</span>
                 </div>
                 {message.message}
             </div>
@@ -51,8 +51,8 @@ class ChatMessages extends Component {
     }
 
     renderChatMessages() {
-        return this.props.messages.map(msg => <ChatMessage key={msg.id} message={msg} />)
-
+        console.log("mahhh props", this.props.messages);
+        return this.props.messages.map((msg, i) => <ChatMessage key={ i } message={ msg } />)
     }
 
     render() {

@@ -45,7 +45,7 @@ export function chatMessages (messages) {
     }
 }
 
-export function chatMessage ({ message }) {
+export function chatMessage (message) {
     return {
         type: 'CHAT_MESSAGE',
         message

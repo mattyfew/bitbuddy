@@ -18,7 +18,7 @@ export function initSocket(store) {
         socket.on('chats', messages => {
             store.dispatch(chatMessages(messages))
         });
-        socket.on('chat', message => store.dispatch(chatMessage(message)));
+        socket.on('chat', messageData => store.dispatch(chatMessage(messageData)));
 
         // socket.on('welcome', function(data) {
         //     console.log("merping", data);

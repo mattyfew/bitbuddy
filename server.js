@@ -51,24 +51,7 @@ if (process.env.NODE_ENV != 'production') {
 app.use(express.static('public'))
 
 
-let onlineUsers = [], messages = [
-    {
-        id: 1,
-        first: 'matt',
-        last: 'matt',
-        message: 'IT WORKED!',
-        timestamp: 'whatever timesdf',
-        image: null
-    },
-    {
-        id: 2,
-        first: 'matt',
-        last: 'matt',
-        message: 'IT WORKED!',
-        timestamp: 'whatever time',
-        image: null
-    }
-]
+let onlineUsers = [], messages = [];
 
 const getOnlineUsers = () => {
     let ids = onlineUsers.map(item => item.id)
@@ -105,20 +88,20 @@ io.on('connection', function(socket) {
     })
 
     socket.on('chat', msg => {
-        console.log("inside chat", msg);
-        io.sockets.emit('chat', data)
+        const sender = onlineUsers.find(user => user.socketId == socket.id)
 
-        // const sender = onlineUsers.find(user => user.socketId == socket.id)
-        //
-        // users.getByIds([ sender.id ]).then(([data]) => {
-        //     data.message = msg.message;
-        //     data.timestamp = new Date().toLocaleString();
-        //     messages.push(data);
-        //     messages = messages.slice(-10);
-        //     io.sockets.emit('chat', data)
-        // });
+        db.getUsersByIds([ sender.id ]).then(([data]) => {
+            let singleChatMessage = data
+            singleChatMessage.message = msg.message
+            singleChatMessage.timestamp = new Date().toLocaleString()
+            messages.push(singleChatMessage)
+            messages = messages.slice(-10) // limits to just 10 messages
 
-    });
+            console.log("messages", messages)
+            console.log("singleChatMessage", singleChatMessage)
+            io.sockets.emit('chat', singleChatMessage)
+        })
+    })
 })
 
 

@@ -42,6 +42,8 @@ export function reducer(state = {}, action) {
         console.log("CHAT_MESSAGES reducer", state);
     }
     if (action.type == 'CHAT_MESSAGE') {
+        console.log("INCOMING ", action);
+        const newChats = state.chatMessages.concat(action.message)
         state = Object.assign({}, state, {
             chatMessages: [...state.chatMessages, action.message]
         })
