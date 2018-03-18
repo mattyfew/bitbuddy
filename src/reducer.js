@@ -32,6 +32,12 @@ export function reducer(state = {}, action) {
         return Object.assign({}, state, { user })
     }
 
+    if (action.type == 'GET_OTHER_USER_INFO') {
+        state = Object.assign({}, state, {
+            otherUser: action.otherUser
+        })
+    }
+
     if (action.type == 'CHAT_MESSAGES') {
         state = Object.assign({}, state, {
             chatMessages: action.messages
@@ -39,7 +45,7 @@ export function reducer(state = {}, action) {
     }
     if (action.type == 'CHAT_MESSAGE') {
         state = Object.assign({}, state, {
-            chatMessages: [...state.chatMessages, action.message]
+            chatMessages: [ ...state.chatMessages, action.message ]
         })
     }
     return state;

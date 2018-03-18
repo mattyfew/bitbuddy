@@ -50,7 +50,6 @@ if (process.env.NODE_ENV != 'production') {
 }
 app.use(express.static('public'))
 
-
 let onlineUsers = [], messages = [];
 
 const getOnlineUsers = () => {
@@ -99,7 +98,6 @@ io.on('connection', function(socket) {
         })
     })
 })
-
 
 app.post('/register-new-user', (req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -158,9 +156,21 @@ app.get('/get-user-info', (req, res) => {
 
 app.get('/get-other-user-info/:userId', (req, res) => {
     db.getUserInfo(req.params.userId)
-        .then(userInfo => {
-            res.json(userInfo)
-        })
+    .then(userInfo => {
+        res.json(userInfo)
+    })
+})
+
+app.post('/newBio', (req, res) => {
+    db.updateBio(req.body.bio, req.session.user.id)
+    .then(() => {
+        res.json({ success: true })
+    })
+})
+
+app.get('/logout', (req, res) => {
+    req.session = null
+    res.redirect('/welcome/')
 })
 
 app.get('/welcome/', (req, res) => {
@@ -173,13 +183,6 @@ app.get('/', (req, res) => {
     if (!req.session.user) res.redirect('/welcome/')
 
     res.sendFile(__dirname + '/index.html')
-})
-
-app.post('/newBio', (req, res) => {
-    db.updateBio(req.body.bio, req.session.user.id)
-    .then(() => {
-        res.json({ success: true })
-    })
 })
 
 app.get('*', function(req, res){

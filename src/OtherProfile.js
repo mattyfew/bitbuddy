@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { connect } from 'react-redux'
+import { getOtherUserInfo } from './actions'
 
-export default class OtherProfile extends Component {
+
+class OtherProfile extends Component {
     constructor(props) {
         super(props)
 
@@ -11,28 +14,48 @@ export default class OtherProfile extends Component {
     }
 
     componentDidMount() {
-        axios.get(`/get-other-user-info/${this.props.params.userId}`)
-            .then(({ data: { firstname, lastname, email, username, id } }) => {
-                this.setState({ firstname, lastname, email, username, id })
-            })
+        console.log("running componentDidMount");
+        const userId = this.props.match && this.props.match.params.userId
+        this.setState({ userId })
+        this.props.dispatch(getOtherUserInfo(userId))
+    }
+
+    componentDidUpdate(nextProps){
+        const userId = this.props.match.params.userId;
+
+        if (userId != this.state.userId){
+            this.setState({ userId })
+            this.componentDidMount()
+        }
     }
 
     render() {
-        if (!this.state.username) {
+        if (!this.props.otherUser) {
             return (
                 <div>Loading....</div>
             )
         }
+
+        const { firstname, lastname, email, imgUrl, username } = this.props.otherUser
+
         return (
             <div>
                 <h1>Other Profile</h1>
 
-                <img src={this.state.imgUrl} alt={this.state.username}/>
-                <p>First Name: {this.state.firstname}</p>
-                <p>Last Name: {this.state.lastname}</p>
-                <p>Email: {this.state.email}</p>
-                <p>Username: {this.state.username}</p>
+                <img src={ imgUrl } alt={ username }/>
+                <p>First Name: { firstname }</p>
+                <p>Last Name: { lastname }</p>
+                <p>Email: { email }</p>
+                <p>Username: { username }</p>
             </div>
         )
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        otherUser: state.otherUser
+    }
+}
+
+export default connect(mapStateToProps)(OtherProfile)

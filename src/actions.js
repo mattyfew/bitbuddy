@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 export function getUserInfo() {
-
     return axios.get('/get-user-info')
         .then( user => {
             return {
@@ -9,10 +8,6 @@ export function getUserInfo() {
                 user: user.data
             }
         })
-}
-
-export function getOtherUserInfo() {
-
 }
 
 export function uploadImage(file) {
@@ -34,6 +29,23 @@ export function updateBio(bio) {
             }
         })
 }
+
+export function getOtherUserInfo(userId) {
+    return axios.get(`/get-other-user-info/${userId}`)
+        .then(res => {
+            console.log(res);
+            return {
+                type: 'GET_OTHER_USER_INFO',
+                otherUser: res.data
+            }
+        })
+}
+
+
+
+
+// CHAT & FRIENDS
+// =======================================
 
 export function fetchFriends() {
     return {

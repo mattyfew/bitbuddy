@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom'
-import { updateBio } from './actions'
+import { updateBio, getUserInfo } from './actions'
 import { connect } from 'react-redux'
-import { getUserInfo } from './actions'
 
 import Profile from './Profile'
 import OtherProfile from './OtherProfile'
@@ -24,7 +23,6 @@ class App extends Component {
         this.setState({
             [e.target.name]: e.target.value
         }, () => console.log(this.state))
-
     }
 
     submitEditBio(bio) {
@@ -32,7 +30,7 @@ class App extends Component {
     }
 
     render() {
-        const { user } = this.props
+        const { user, otherUser } = this.props
 
         if (!user) {
             return (<div>Loading...</div>)
@@ -51,19 +49,20 @@ class App extends Component {
                                      <li><Link to="/user/2">user2</Link></li>
                                      <li><Link to="/user/3">user3</Link></li>
                                      <li><Link to="/user/4">user4</Link></li>
+                                     <li><a href="/logout">Logout</a></li>
                                  </ul>
                              </nav>
                          </div>
                          <Switch>
                              {/*<Route exact path="/" component={Profile} />*/}
                              <Route exact path="/" render={() =>
-                                    <Profile
-                                        user={ user }
-                                        submitEditBio={ this.submitEditBio }
-                                        handleChange={ this.handleChange }
-                                    />
+                                <Profile
+                                    user={ user }
+                                    submitEditBio={ this.submitEditBio }
+                                    handleChange={ this.handleChange }
+                                />
                              } />
-                             <Route exact path="/user/:userId" component={OtherProfile} />
+                             <Route exact path="/user/:userId" component={ OtherProfile } />
                              <Route exact path="/chat" component={Chat} />
                              <Redirect path="*" to="/" />
                          </Switch>
