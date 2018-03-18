@@ -17,7 +17,6 @@ class OtherProfile extends Component {
         this.setState({ userId: parseInt(userId) }, () => {
 
             if (this.state.userId === this.props.user.id) {
-                console.log("we made it", this.props);
                 this.props.history.push('/')
             }
 
@@ -41,17 +40,25 @@ class OtherProfile extends Component {
             )
         }
 
-        const { firstname, lastname, email, imgUrl, username } = this.props.otherUser
+        const { firstname, lastname, email, imgUrl, username, bio } = this.props.otherUser
 
         return (
             <div>
                 <h1>Other Profile</h1>
+                <section id="profile-info">
+                    <div className="profile-left">
+                        <h2>{username}</h2>
+                        <img src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
+                    </div>
 
-                <img src={ imgUrl } alt={ username }/>
-                <p>First Name: { firstname }</p>
-                <p>Last Name: { lastname }</p>
-                <p>Email: { email }</p>
-                <p>Username: { username }</p>
+                    <div className="profile-right">
+                        <p>First Name: { firstname }</p>
+                        <p>Last Name: { lastname }</p>
+                        <p>Email: { email }</p>
+                        <p>Username: { username }</p>
+                        <p>Bio: { bio }</p>
+                    </div>
+                </section>
             </div>
         )
     }
