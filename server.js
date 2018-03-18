@@ -124,17 +124,17 @@ app.post('/register-new-user', (req, res) => {
 app.post('/login-user', (req, res) => {
     const { email, password } = req.body
     db.loginUser(email, password)
-        .then(results => {
-            req.session.user = {
-                id: results.id,
-                firstname: results.firstname,
-                lastname: results.lastname,
-                email: results.email,
-                username: results.username
-            }
-            res.redirect('/')
-        })
-        .catch(err => console.log("There was an error in loginUser", err) )
+    .then(results => {
+        req.session.user = {
+            id: results.id,
+            firstname: results.firstname,
+            lastname: results.lastname,
+            email: results.email,
+            username: results.username
+        }
+        res.redirect('/')
+    })
+    .catch(err => console.log("There was an error in loginUser", err) )
 })
 
 app.post('/uploadImage', uploader.single('profilepic'), function(req, res) {
@@ -151,9 +151,9 @@ app.post('/uploadImage', uploader.single('profilepic'), function(req, res) {
 
 app.get('/get-user-info', (req, res) => {
     db.getUserInfo(req.session.user.id)
-        .then(userInfo => {
-            res.json(userInfo)
-        })
+    .then(userInfo => {
+        res.json(userInfo)
+    })
 })
 
 app.get('/get-other-user-info/:userId', (req, res) => {
@@ -173,6 +173,13 @@ app.get('/', (req, res) => {
     if (!req.session.user) res.redirect('/welcome/')
 
     res.sendFile(__dirname + '/index.html')
+})
+
+app.post('/newBio', (req, res) => {
+    db.updateBio(req.body.bio, req.session.user.id)
+    .then(() => {
+        res.json({ success: true })
+    })
 })
 
 app.get('*', function(req, res){

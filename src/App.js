@@ -27,12 +27,14 @@ class App extends Component {
 
     }
 
-    submitEditBio() {
-        this.props.dispatch(updateBio(this.state.bio))
+    submitEditBio(bio) {
+        this.props.dispatch(updateBio(bio))
     }
 
     render() {
-        if (!this.props.user) {
+        const { user } = this.props
+
+        if (!user) {
             return (<div>Loading...</div>)
         }
 
@@ -53,7 +55,14 @@ class App extends Component {
                              </nav>
                          </div>
                          <Switch>
-                             <Route exact path="/" component={Profile} />
+                             {/*<Route exact path="/" component={Profile} />*/}
+                             <Route exact path="/" render={() =>
+                                    <Profile
+                                        user={ user }
+                                        submitEditBio={ this.submitEditBio }
+                                        handleChange={ this.handleChange }
+                                    />
+                             } />
                              <Route exact path="/user/:userId" component={OtherProfile} />
                              <Route exact path="/chat" component={Chat} />
                              <Redirect path="*" to="/" />
@@ -65,7 +74,7 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = function(state) {
+const mapStateToProps = state =>{
     return {
         bio: state.user && state.user.bio,
         user: state.user

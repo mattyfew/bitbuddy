@@ -29,7 +29,7 @@ export function reducer(state = {}, action) {
         const user = Object.assign({}, state.user, {
             bio: action.bio
         })
-        return Object.assign({}, state, { user });
+        return Object.assign({}, state, { user })
     }
 
     if (action.type == 'CHAT_MESSAGES') {

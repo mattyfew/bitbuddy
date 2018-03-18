@@ -62,11 +62,11 @@ function checkForEmailAndGetUserInfo(email) {
 
 exports.getUserInfo = function(userId) {
     return new Promise( (resolve, reject) => {
-        const q = `SELECT id, firstname, lastname, email, username, profilepic FROM users WHERE id = $1`
+        const q = `SELECT id, firstname, lastname, email, username, profilepic, bio FROM users WHERE id = $1`
         const params = [ userId ]
 
         db.query(q, params)
-        .then(({ rows }) => resolve(rows[0]))
+        .then(results => resolve(results.rows[0]))
         .catch(e => {
             console.log("There was an error in getUserInfo", e)
             reject(e)
@@ -101,11 +101,26 @@ exports.getUsersByIds = function(ids) {
             FROM users
             WHERE id = ANY($1)`
         const params = [ ids ]
+
         db.query(q, params)
-            .then(results => results.rows)
-            .catch(e => {
-                console.log("There was an error in getUsersByIds", e)
-                reject(e)
-            })
+        .then(results => resolve(results.rows))
+        .catch(e => {
+            console.log("There was an error in getUsersByIds", e)
+            reject(e)
+        })
+    })
+}
+
+exports.updateBio = function(bio, userId) {
+    return new Promise(function(resolve, reject) {
+        const q = 'UPDATE users SET bio = $1 WHERE id = $2'
+        const params = [ bio, userId ]
+
+        db.query(q, params)
+        .then(() => resolve())
+        .catch(e => {
+            console.log("There was an error in updateBio", e)
+            reject(e)
+        })
     })
 }

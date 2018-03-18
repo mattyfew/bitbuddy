@@ -26,10 +26,13 @@ export function uploadImage(file) {
 }
 
 export function updateBio(bio) {
-    return {
-        type: 'UPDATE_BIO',
-        bio
-    }
+    return axios.post('/newBio', { bio })
+        .then(() => {
+            return {
+                type: 'UPDATE_BIO',
+                bio
+            }
+        })
 }
 
 export function fetchFriends() {

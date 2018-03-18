@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { uploadImage } from './actions'
+// import { connect } from 'react-redux'
+// import { uploadImage } from './actions'
 
-class Profile extends Component {
+export default class Profile extends Component {
     constructor(props) {
         super(props)
 
@@ -12,34 +12,35 @@ class Profile extends Component {
         }
 
         this.toggleShowUploadImage = this.toggleShowUploadImage.bind(this)
-        this.submitUploadImage = this.submitUploadImage.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmitBio = this.handleSubmitBio.bind(this)
+        this.handleSubmitImg = this.handleSubmitImg.bind(this)
+        this.handleFileChange = this.handleFileChange.bind(this)
     }
 
     toggleShowUploadImage() {
         this.setState({ showUploadImage: !this.state.showUploadImage })
     }
 
-    submitUploadImage(e) {
-        console.log("about to submit profilepic");
+    handleSubmitBio() {
+        this.props.submitEditBio(this.newBio.value)
+    }
+
+    handleSubmitImg(e) {
         e.preventDefault()
         let formData = new FormData();
         formData.append('profilepic', this.state.profilepic);
-
-        this.props.dispatch(uploadImage(formData))
+        this.props.submitEditBio(formData)
     }
 
-    handleChange(e) {
+    handleFileChange(e) {
         this.setState({
             [e.target.name]: e.target.files[0]
-
-        }, () => {
-            console.log('new state', this.state);
-        })
+        }, () => console.log('new state', this.state))
     }
 
 
     render() {
+        console.log("rendering propfile", this.props);
         const { id, firstname, lastname, email, username, bio, imgUrl } = this.props.user
         return (
             <div>
@@ -50,11 +51,11 @@ class Profile extends Component {
                         {/* <img src={ imgUrl } alt={ username }/> */}
                         <h2>{username}</h2>
                         <img src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
-                        <p onClick={this.toggleShowUploadImage}>Upload new image</p>
+                        <p onClick={ this.toggleShowUploadImage }>Upload new image</p>
                         { this.state.showUploadImage &&
-                            <form onSubmit={this.submitUploadImage}>
+                            <form onSubmit={ this.handleSubmitImg }>
                                 <p>Upload a new image</p>
-                                <input onChange={this.handleChange} type="file" placeholder="upload an image" name="profilepic" />
+                                <input onChange={ this.handleFileChange } type="file" placeholder="upload an image" name="profilepic" />
                                 <button type="submit">Submit</button>
                             </form>
                         }
@@ -65,26 +66,11 @@ class Profile extends Component {
                         <p>Last Name: { lastname }</p>
                         <p>Email: { email }</p>
                         <p>Username: { username }</p>
-                        <textarea name="bio" id="bio" cols="30" rows="10"
-                            onChange={this.props.handleChange}
-                            >
-                            {this.props.bio}
-                        </textarea>
-                        <button onClick={this.props.submitEditBio}>Submit Changes</button>
+                        <textarea name="bio" id="bio" defaultValue={ bio } ref={ elem => this.newBio = elem } />
+                        <button onClick={ this.handleSubmitBio }>Submit Changes</button>
                     </div>
-
                 </section>
-
             </div>
         )
     }
 }
-
-const mapStateToProps = function(state) {
-    return {
-        bio: state.user && state.user.bio,
-        user: state.user
-    }
-}
-
-export default connect(mapStateToProps)(Profile)
