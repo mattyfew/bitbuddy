@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { getOtherUserInfo } from './actions'
+import FriendButton from './FriendButton'
+
 
 class OtherProfile extends Component {
     constructor(props) {
@@ -34,13 +36,16 @@ class OtherProfile extends Component {
     }
 
     render() {
+        console.log(this.props);
         if (!this.props.otherUser) {
             return (
                 <div>Loading....</div>
             )
         }
 
-        const { firstname, lastname, email, imgUrl, username, bio } = this.props.otherUser
+        const { otherUser: {
+            id, firstname, lastname, email, imgUrl, username, bio, friendshipStatus
+        }, user, dispatch } = this.props
 
         return (
             <div>
@@ -49,6 +54,12 @@ class OtherProfile extends Component {
                     <div className="profile-left">
                         <h2>{username}</h2>
                         <img src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
+                        <FriendButton
+                            userId={ user.id }
+                            otherUserId={ id }
+                            friendshipStatus={ friendshipStatus }
+                            dispatch={ dispatch }
+                        />
                     </div>
 
                     <div className="profile-right">

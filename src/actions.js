@@ -44,7 +44,49 @@ export function updateBio(bio) {
 
 
 
-// CHAT & FRIENDS
+// FRIENDS
+// =======================================
+
+export function sendFriendRequest(otherUserId) {
+    return axios.post('/send-friend-request', { action: 'sendFriendRequest', otherUserId  })
+        .then(() => {
+            return {
+                type: 'SEND_FRIEND_REQUEST',
+            }
+        })
+}
+
+export function acceptFriendRequest(otherUserId) {
+    return axios.post('/accept-friend-request', { bio })
+        .then(() => {
+            return {
+                type: 'ACCEPT_FRIEND_REQUEST',
+            }
+        })
+}
+
+export function cancelFriendRequest(otherUserId) {
+    return axios.post('/cancel-friend-request', { bio })
+        .then(() => {
+            return {
+                type: 'CANCEL_FRIEND_REQUEST',
+            }
+        })
+}
+
+export function terminateFriendship(otherUserId) {
+    return axios.post('/terminate-friendship', { bio })
+        .then(() => {
+            return {
+                type: 'TERMINATE_FRIEND_REQUEST',
+            }
+        })
+}
+
+
+
+
+// CHAT
 // =======================================
 
 export function fetchFriends() {

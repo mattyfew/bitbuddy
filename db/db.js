@@ -124,3 +124,95 @@ exports.updateBio = function(bio, userId) {
         })
     })
 }
+
+
+
+// FRIENDSHIPS
+
+const PENDING = 1, ACCEPTED = 2, REJECTED = 3, TERMINATED = 4, CANCELED = 5;
+
+exports.getFriendshipStatus = function(userId, otherUserId) {
+    return new Promise((resolve, reject) => {
+
+        const q = `SELECT status, sender_id AS sender, recipient_id AS recipient
+                   FROM friendships
+                   WHERE (recipient_id = $1 OR sender_id = $1)
+                   AND (recipient_id = $2 OR sender_id = $2)`
+        const params = [ userId, otherUserId ]
+
+        db.query(q, params)
+        .then(results => {
+            let status
+            if (!results.rows.length) {
+                status = 0
+            } else {
+                status = results.rows[0].status
+            }
+            resolve(status)
+        })
+        .catch(e => {
+            console.log("There was an error in getFriendshipStatus", e)
+            reject(e)
+        })
+    })
+}
+
+exports.sendFriendRequest = function(userId, otherUserId) {
+    return new Promise(function(resolve, reject) {
+        const q = `
+            INSERT INTO friendships
+            (status, sender_id, recipient_id)
+            VALUES ($1, $2, $3)
+            RETURNING *`
+        const params = [ 1, userId, otherUserId ]
+
+        db.query(q, params)
+        .then(results => resolve(results.rows[0]))
+        .catch(e => {
+            console.log("There was an error in sendFriendRequest", e)
+            reject(e)
+        })
+    })
+}
+
+exports.acceptFriendRequest = function() {
+    return new Promise(function(resolve, reject) {
+        const q = ''
+        const params = []
+
+        db.query(q, params)
+        .then(() => resolve())
+        .catch(e => {
+            console.log("There was an error in acceptFriendRequest", e)
+            reject(e)
+        })
+    })
+}
+
+exports.cancelFriendRequest = function() {
+    return new Promise(function(resolve, reject) {
+        const q = ''
+        const params = []
+
+        db.query(q, params)
+        .then(() => resolve())
+        .catch(e => {
+            console.log("There was an error in cancelFriendRequest", e)
+            reject(e)
+        })
+    })
+}
+
+exports.terminateFriendship = function() {
+    return new Promise(function(resolve, reject) {
+        const q = ''
+        const params = []
+
+        db.query(q, params)
+        .then(() => resolve())
+        .catch(e => {
+            console.log("There was an error in terminateFriendship", e)
+            reject(e)
+        })
+    })
+}

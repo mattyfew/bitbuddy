@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
-// import { uploadImage } from './actions'
 
 export default class Profile extends Component {
     constructor(props) {

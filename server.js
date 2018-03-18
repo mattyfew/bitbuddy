@@ -98,6 +98,11 @@ io.on('connection', function(socket) {
         })
     })
 })
+// app.use((req) => {
+//     console.log(req.url);
+// })
+
+app.use('/', require('./friendships'))
 
 app.post('/register-new-user', (req, res) => {
     const { firstname, lastname, username, email, password } = req.body
@@ -155,10 +160,18 @@ app.get('/get-user-info', (req, res) => {
 })
 
 app.get('/get-other-user-info/:userId', (req, res) => {
-    db.getUserInfo(req.params.userId)
-    .then(userInfo => {
-        res.json(userInfo)
+    Promise.all([
+        db.getUserInfo(req.params.userId),
+        db.getFriendshipStatus(req.session.user.id, req.params.userId)
+    ])
+    .then(([ userInfo, friendshipStatus ]) => {
+        const newObj = Object.assign({}, userInfo, {
+            friendshipStatus
+        })
+        console.log("otherUser data: ", newObj)
+        res.json(newObj)
     })
+    .catch(e => console.log('There was an error in /get-other-user-info', e))
 })
 
 app.post('/newBio', (req, res) => {
