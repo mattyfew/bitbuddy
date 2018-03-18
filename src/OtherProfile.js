@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 import { getOtherUserInfo } from './actions'
-
 
 class OtherProfile extends Component {
     constructor(props) {
@@ -14,10 +13,16 @@ class OtherProfile extends Component {
     }
 
     componentDidMount() {
-        console.log("running componentDidMount");
         const userId = this.props.match && this.props.match.params.userId
-        this.setState({ userId })
-        this.props.dispatch(getOtherUserInfo(userId))
+        this.setState({ userId: parseInt(userId) }, () => {
+
+            if (this.state.userId === this.props.user.id) {
+                console.log("we made it", this.props);
+                this.props.history.push('/')
+            }
+
+            this.props.dispatch(getOtherUserInfo(userId))
+        })
     }
 
     componentDidUpdate(nextProps){
@@ -54,8 +59,9 @@ class OtherProfile extends Component {
 
 function mapStateToProps(state) {
     return {
+        user: state.user,
         otherUser: state.otherUser
     }
 }
 
-export default connect(mapStateToProps)(OtherProfile)
+export default connect(mapStateToProps)(withRouter(OtherProfile))

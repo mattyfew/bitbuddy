@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { push } from 'react-router-redux'
 
 export function getUserInfo() {
     return axios.get('/get-user-info')
@@ -6,6 +7,16 @@ export function getUserInfo() {
             return {
                 type: 'GET_USER_INFO',
                 user: user.data
+            }
+        })
+}
+
+export function getOtherUserInfo(userId) {
+    return axios.get(`/get-other-user-info/${userId}`)
+        .then(res => {
+            return {
+                type: 'GET_OTHER_USER_INFO',
+                otherUser: res.data
             }
         })
 }
@@ -26,17 +37,6 @@ export function updateBio(bio) {
             return {
                 type: 'UPDATE_BIO',
                 bio
-            }
-        })
-}
-
-export function getOtherUserInfo(userId) {
-    return axios.get(`/get-other-user-info/${userId}`)
-        .then(res => {
-            console.log(res);
-            return {
-                type: 'GET_OTHER_USER_INFO',
-                otherUser: res.data
             }
         })
 }
