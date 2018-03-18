@@ -60,16 +60,16 @@ export function acceptFriendRequest(otherUserId) {
     return axios.post('/accept-friend-request', { bio })
         .then(() => {
             return {
-                type: 'ACCEPT_FRIEND_REQUEST',
+                type: 'ACCEPT_FRIEND_REQUEST'
             }
         })
 }
 
 export function cancelFriendRequest(otherUserId) {
-    return axios.post('/cancel-friend-request', { bio })
+    return axios.post('/cancel-friend-request', { action: 'cancelFriendRequest', otherUserId })
         .then(() => {
             return {
-                type: 'CANCEL_FRIEND_REQUEST',
+                type: 'CANCEL_FRIEND_REQUEST'
             }
         })
 }

@@ -189,10 +189,15 @@ exports.acceptFriendRequest = function() {
     })
 }
 
-exports.cancelFriendRequest = function() {
+exports.cancelFriendRequest = function(userId, otherUserId) {
     return new Promise(function(resolve, reject) {
-        const q = ''
-        const params = []
+        const q = `
+            UPDATE friendships
+            SET status = $1
+            WHERE (recipient_id = $2 OR sender_id = $2)
+            AND (recipient_id = $3 OR sender_id = $3)
+        `
+        const params = [ 5, userId, otherUserId ]
 
         db.query(q, params)
         .then(() => resolve())
