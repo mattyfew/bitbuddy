@@ -21,14 +21,14 @@ app.use(bodyParser.json())
 
 const cookieSession = require('cookie-session')
 
-var diskStorage = multer.diskStorage({
+const diskStorage = multer.diskStorage({
     filename: function(req, file, callback) {
         uidSafe(24).then(function(uid) {
             callback(null, uid + path.extname(file.originalname))
         })
     }
 })
-var uploader = multer({
+const uploader = multer({
     storage: diskStorage,
     limits: {
         fileSize: 2097152
@@ -104,18 +104,26 @@ io.on('connection', function(socket) {
 app.post('/register-new-user', (req, res) => {
     const { firstname, lastname, username, email, password } = req.body
 
-    db.registerNewUser(firstname, lastname, username, email, password)
-        .then(({ id, firstname, lastname, username, email }) => {
+    if ( !firstname || !lastname || !email || !password  || !username) {
+        res.json({
+            success: false,
+            error: "Please complete all fields before submitting."
+        })
+    } else {
+        db.registerNewUser(firstname, lastname, username, email, password)
+        .then(id => {
+            console.log("in here", id);
             req.session.user = { id, firstname, lastname, username, email }
             res.json({ success: true })
         })
         .catch(err => console.log("There was an error in POST /register-new-user", err) )
+    }
+
 })
 
 app.post('/login-user', (req, res) => {
-    console.log("in POST /login-user", req.body)
-
-    db.loginUser(req.body.email, req.body.password)
+    const { email, password } = req.body
+    db.loginUser(email, password)
         .then(results => {
             req.session.user = {
                 id: results.id,

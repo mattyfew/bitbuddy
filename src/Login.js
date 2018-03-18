@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 
 export default class Login extends Component {
     constructor(props) {
@@ -30,6 +30,8 @@ export default class Login extends Component {
         return (
             <div>
                 <h2>Login Now</h2>
+                <Link to="/">Click here to Register!</Link>
+
                 <form id="register-form">
                     <div className="form-single-input-wrapper">
                         <label htmlFor="email-login">Email</label>

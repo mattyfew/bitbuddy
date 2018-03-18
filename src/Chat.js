@@ -42,7 +42,6 @@ class ChatMessages extends Component {
 
     onKeyDown(e) {
         if (e.keyCode == 13) {
-            console.log(e.target.value);
             let msg = e.target.value;
             e.target.value = '';
             this.props.sendMessage(msg);

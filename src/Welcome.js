@@ -17,7 +17,7 @@ export default class Welcome extends Component {
                     <div className="forms">
                         <Switch>
                             <Route exact path="/" component={Registration} />
-                            <Route exact path="/login" component={Login} />
+                            <Route path="/login" component={Login} />
                             <Redirect path="*" to="/" />
                         </Switch>
                     </div>
