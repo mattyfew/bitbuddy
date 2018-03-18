@@ -157,15 +157,26 @@ exports.getFriendshipStatus = function(userId, otherUserId) {
     })
 }
 
-exports.sendFriendRequest = function(userId, otherUserId) {
+exports.sendFriendRequest = function(userId, otherUserId, oldStatus) {
     return new Promise(function(resolve, reject) {
-        const q = `
-            INSERT INTO friendships
-            (status, sender_id, recipient_id)
-            VALUES ($1, $2, $3)
-            RETURNING *`
-        const params = [ 1, userId, otherUserId ]
+        let q
 
+        if (oldStatus == 0) {
+            q = `
+                INSERT INTO friendships
+                (status, sender_id, recipient_id)
+                VALUES ($1, $2, $3)
+                RETURNING *`
+        } else if (oldStatus == 5) {
+            q = `
+                UPDATE friendships
+                SET status = $1
+                WHERE (recipient_id = $2 OR sender_id = $2)
+                AND (recipient_id = $3 OR sender_id = $3)
+                RETURNING *`
+        }
+
+        const params = [ 1, userId, otherUserId ]
         db.query(q, params)
         .then(results => resolve(results.rows[0]))
         .catch(e => {
