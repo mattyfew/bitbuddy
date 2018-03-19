@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-    sendFriendRequest, acceptFriendRequest, cancelFriendRequest, terminateFriendship
+    sendFriendRequest, acceptFriendRequest, cancelFriendRequest, rejectFriendRequest, terminateFriendship
 } from './actions'
 
 export default class FriendButton extends Component {
@@ -23,9 +23,9 @@ export default class FriendButton extends Component {
                 dispatch(sendFriendRequest(otherUserId, friendshipStatus))
                 break;
             case 1: // pending
-                if (str === 'cancel') {
-                    console.log("CANCELLING!");
-                    dispatch(cancelFriendRequest(otherUserId))
+                if (str === 'reject') {
+                    console.log("REJECTING!");
+                    dispatch(rejectFriendRequest(otherUserId))
                 } else {
                     console.log("ACCEPTING!");
                     dispatch(acceptFriendRequest(otherUserId))
@@ -35,8 +35,10 @@ export default class FriendButton extends Component {
                 dispatch(terminateFriendship(otherUserId))
                 break;
             case 3: // rejected
+                dispatch(sendFriendRequest(otherUserId, friendshipStatus))
                 break;
             case 4: // terminated
+                dispatch(sendFriendRequest(otherUserId, friendshipStatus))
                 break;
             case 5: // cancelled
                 dispatch(sendFriendRequest(otherUserId, friendshipStatus))
@@ -80,18 +82,14 @@ export default class FriendButton extends Component {
         return (
             <div>
                 { showBothButtons && <button onClick={ () => {
-                    this.handleClick("cancel")
-                }}>Cancel</button> }
+                    this.handleClick("reject")
+                }}>Reject</button> }
                 <button onClick={ this.handleClick }>{ text }</button>
             </div>
         )
     }
 
     render() {
-        return (
-            <div>
-                { this.renderButton() }
-            </div>
-        )
+        return this.renderButton()
     }
 }

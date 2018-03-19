@@ -74,6 +74,15 @@ export function cancelFriendRequest(otherUserId) {
         })
 }
 
+export function rejectFriendRequest(otherUserId) {
+    return axios.post('/reject-friend-request', { action: 'REJECT_FRIEND_REQUEST', otherUserId })
+        .then(() => {
+            return {
+                type: 'REJECT_FRIEND_REQUEST'
+            }
+        })
+}
+
 export function terminateFriendship(otherUserId) {
     return axios.post('/terminate-friendship', { action: 'TERMINATE_FRIENDSHIP', otherUserId })
         .then(() => {

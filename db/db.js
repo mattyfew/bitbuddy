@@ -165,6 +165,8 @@ exports.sendFriendRequest = function(userId, otherUserId, oldStatus) {
     return new Promise(function(resolve, reject) {
         let q
 
+        // TODO: REFACTOR this
+
         if (oldStatus == 0) {
             q = `
                 INSERT INTO friendships
@@ -172,6 +174,13 @@ exports.sendFriendRequest = function(userId, otherUserId, oldStatus) {
                 VALUES ($1, $2, $3)
                 RETURNING *`
         } else if (oldStatus == 3) { // rejected
+            q = `
+                UPDATE friendships
+                SET status = $1
+                WHERE (recipient_id = $2 OR sender_id = $2)
+                AND (recipient_id = $3 OR sender_id = $3)
+                RETURNING *`
+        } else if (oldStatus == 4) { // terminated
             q = `
                 UPDATE friendships
                 SET status = $1
@@ -234,10 +243,34 @@ exports.cancelFriendRequest = function(userId, otherUserId) {
     })
 }
 
-exports.terminateFriendship = function() {
+exports.rejectFriendRequest = function(userId, otherUserId) {
     return new Promise(function(resolve, reject) {
-        const q = ''
-        const params = []
+        const q = `
+            UPDATE friendships
+            SET status = $1
+            WHERE (recipient_id = $2 OR sender_id = $2)
+            AND (recipient_id = $3 OR sender_id = $3)
+        `
+        const params = [ 3, userId, otherUserId ]
+
+        db.query(q, params)
+        .then(() => resolve())
+        .catch(e => {
+            console.log("There was an error in cancelFriendRequest", e)
+            reject(e)
+        })
+    })
+}
+
+exports.terminateFriendship = function(userId, otherUserId) {
+    return new Promise(function(resolve, reject) {
+        const q = `
+            UPDATE friendships
+            SET status = $1
+            WHERE (recipient_id = $2 OR sender_id = $2)
+            AND (recipient_id = $3 OR sender_id = $3)
+        `
+        const params = [ 4, userId, otherUserId ]
 
         db.query(q, params)
         .then(() => resolve())

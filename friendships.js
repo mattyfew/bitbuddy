@@ -23,6 +23,13 @@ router.post('/cancel-friend-request', (req, res) => {
     })
 })
 
+router.post('/reject-friend-request', (req, res) => {
+    db.rejectFriendRequest(req.session.user.id, req.body.otherUserId)
+    .then(() => {
+        res.json({ success: true })
+    })
+})
+
 router.post('/terminate-friendship', (req, res) => {
     db.terminateFriendship(req.session.user.id, req.body.otherUserId)
     .then(() => {
