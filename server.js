@@ -166,7 +166,9 @@ app.get('/get-other-user-info/:userId', (req, res) => {
     ])
     .then(([ userInfo, friendshipStatus ]) => {
         const newObj = Object.assign({}, userInfo, {
-            friendshipStatus
+            friendshipStatus: friendshipStatus.status,
+            sender: friendshipStatus.sender,
+            recipient: friendshipStatus.recipient
         })
         console.log("otherUser data: ", newObj)
         res.json(newObj)

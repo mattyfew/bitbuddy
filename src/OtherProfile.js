@@ -17,11 +17,9 @@ class OtherProfile extends Component {
     componentDidMount() {
         const userId = this.props.match && this.props.match.params.userId
         this.setState({ userId: parseInt(userId) }, () => {
-
             if (this.state.userId === this.props.user.id) {
                 this.props.history.push('/')
             }
-
             this.props.dispatch(getOtherUserInfo(userId))
         })
     }
@@ -44,7 +42,7 @@ class OtherProfile extends Component {
         }
 
         const { otherUser: {
-            id, firstname, lastname, email, imgUrl, username, bio, friendshipStatus
+            id, firstname, lastname, email, imgUrl, username, bio, friendshipStatus, sender, recipient
         }, user, dispatch } = this.props
 
         return (
@@ -58,6 +56,8 @@ class OtherProfile extends Component {
                             userId={ user.id }
                             otherUserId={ id }
                             friendshipStatus={ friendshipStatus }
+                            sender={ sender }
+                            recipient={ recipient }
                             dispatch={ dispatch }
                         />
                     </div>

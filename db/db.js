@@ -148,7 +148,11 @@ exports.getFriendshipStatus = function(userId, otherUserId) {
             } else {
                 status = results.rows[0].status
             }
-            resolve(status)
+            resolve({
+                status,
+                sender: results.rows[0].sender,
+                recipient: results.rows[0].recipient
+            })
         })
         .catch(e => {
             console.log("There was an error in getFriendshipStatus", e)
@@ -167,7 +171,14 @@ exports.sendFriendRequest = function(userId, otherUserId, oldStatus) {
                 (status, sender_id, recipient_id)
                 VALUES ($1, $2, $3)
                 RETURNING *`
-        } else if (oldStatus == 5) {
+        } else if (oldStatus == 3) { // rejected
+            q = `
+                UPDATE friendships
+                SET status = $1
+                WHERE (recipient_id = $2 OR sender_id = $2)
+                AND (recipient_id = $3 OR sender_id = $3)
+                RETURNING *`
+        } else if (oldStatus == 5) { // cancelled
             q = `
                 UPDATE friendships
                 SET status = $1
@@ -186,10 +197,14 @@ exports.sendFriendRequest = function(userId, otherUserId, oldStatus) {
     })
 }
 
-exports.acceptFriendRequest = function() {
+exports.acceptFriendRequest = function(userId, otherUserId) {
     return new Promise(function(resolve, reject) {
-        const q = ''
-        const params = []
+        const q = `
+            UPDATE friendships
+            SET status = $1
+            WHERE (recipient_id = $2 OR sender_id = $2)
+            AND (recipient_id = $3 OR sender_id = $3)`
+        const params = [ 2, userId, otherUserId ]
 
         db.query(q, params)
         .then(() => resolve())

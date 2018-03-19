@@ -57,7 +57,7 @@ export function sendFriendRequest(otherUserId, oldStatus) {
 }
 
 export function acceptFriendRequest(otherUserId) {
-    return axios.post('/accept-friend-request', { bio })
+    return axios.post('/accept-friend-request', { action: 'ACCEPT_FRIEND_REQUEST', otherUserId })
         .then(() => {
             return {
                 type: 'ACCEPT_FRIEND_REQUEST'
@@ -75,7 +75,7 @@ export function cancelFriendRequest(otherUserId) {
 }
 
 export function terminateFriendship(otherUserId) {
-    return axios.post('/terminate-friendship', { bio })
+    return axios.post('/terminate-friendship', { action: 'TERMINATE_FRIENDSHIP', otherUserId })
         .then(() => {
             return {
                 type: 'TERMINATE_FRIEND_REQUEST',
