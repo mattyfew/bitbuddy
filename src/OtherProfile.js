@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { getOtherUserInfo } from './actions'
 import FriendButton from './FriendButton'
 
-
 class OtherProfile extends Component {
     constructor(props) {
         super(props)

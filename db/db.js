@@ -137,7 +137,8 @@ exports.getFriendshipStatus = function(userId, otherUserId) {
         const q = `SELECT status, sender_id AS sender, recipient_id AS recipient
                    FROM friendships
                    WHERE (recipient_id = $1 OR sender_id = $1)
-                   AND (recipient_id = $2 OR sender_id = $2)`
+                   AND (recipient_id = $2 OR sender_id = $2)
+                   AND (status = 1 OR status = 2)`
         const params = [ userId, otherUserId ]
 
         db.query(q, params)
@@ -150,8 +151,8 @@ exports.getFriendshipStatus = function(userId, otherUserId) {
             }
             resolve({
                 status,
-                sender: results.rows[0].sender,
-                recipient: results.rows[0].recipient
+                sender: (results.rows[0] && results.rows[0].sender) || null ,
+                recipient: (results.rows[0] && results.rows[0].recipient) || null
             })
         })
         .catch(e => {
