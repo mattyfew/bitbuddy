@@ -4,11 +4,12 @@ const db = require('./db/db')
 router.post('/send-friend-request', (req, res) => {
     db.sendFriendRequest(req.session.user.id, req.body.otherUserId, req.body.oldStatus)
     .then(results => {
+        console.log("RESULTS from send-friend-requrest", results);
 
         res.json({
             success: true,
-            sender: results.sender,
-            recipient: results.recipient
+            sender: results.sender_id,
+            recipient: results.recipient_id
         })
     })
 })

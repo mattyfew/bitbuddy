@@ -49,6 +49,7 @@ export function updateBio(bio) {
 export function sendFriendRequest(otherUserId, oldStatus) {
     return axios.post('/send-friend-request', { action: 'SEND_FRIEND_REQUEST', otherUserId, oldStatus })
         .then(resp => {
+            console.log("actoins",resp.data);
             return {
                 type: 'SEND_FRIEND_REQUEST',
                 sender: resp.data.sender,
