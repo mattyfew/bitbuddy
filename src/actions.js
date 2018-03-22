@@ -49,7 +49,6 @@ export function updateBio(bio) {
 export function sendFriendRequest(otherUserId, oldStatus) {
     return axios.post('/send-friend-request', { action: 'SEND_FRIEND_REQUEST', otherUserId, oldStatus })
         .then(resp => {
-            console.log("actoins",resp.data);
             return {
                 type: 'SEND_FRIEND_REQUEST',
                 sender: resp.data.sender,
@@ -58,40 +57,29 @@ export function sendFriendRequest(otherUserId, oldStatus) {
         })
 }
 
+export function updateFriendRequest(otherUserId, action) {
+    return axios.post('/update-friend-request', { action, otherUserId })
+        .then(() => ({ type: action }))
+}
+
 export function acceptFriendRequest(otherUserId) {
     return axios.post('/accept-friend-request', { action: 'ACCEPT_FRIEND_REQUEST', otherUserId })
-        .then(() => {
-            return {
-                type: 'ACCEPT_FRIEND_REQUEST'
-            }
-        })
+        .then(() => ({ type: 'ACCEPT_FRIEND_REQUEST' }))
 }
 
 export function cancelFriendRequest(otherUserId) {
     return axios.post('/cancel-friend-request', { action: 'CANCEL_FRIEND_REQUEST', otherUserId })
-        .then(() => {
-            return {
-                type: 'CANCEL_FRIEND_REQUEST'
-            }
-        })
+        .then(() => ({ type: 'CANCEL_FRIEND_REQUEST' }))
 }
 
 export function rejectFriendRequest(otherUserId) {
     return axios.post('/reject-friend-request', { action: 'REJECT_FRIEND_REQUEST', otherUserId })
-        .then(() => {
-            return {
-                type: 'REJECT_FRIEND_REQUEST'
-            }
-        })
+        .then(() => ({ type: 'REJECT_FRIEND_REQUEST' }))
 }
 
 export function terminateFriendship(otherUserId) {
     return axios.post('/terminate-friendship', { action: 'TERMINATE_FRIENDSHIP', otherUserId })
-        .then(() => {
-            return {
-                type: 'TERMINATE_FRIEND_REQUEST',
-            }
-        })
+        .then(() => ({ type: 'TERMINATE_FRIEND_REQUEST' }))
 }
 
 export function getFriends() {

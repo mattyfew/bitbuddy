@@ -1,11 +1,3 @@
-const initState = {
-    FRIEND_REQUEST_PENDING: 1,
-    FRIEND_REQUEST_ACCEPTED: 2,
-    FRIEND_REQUEST_REJECTED: 3,
-    FRIEND_REQUEST_TERMINATED: 4,
-    FRIEND_REQUEST_CANCELED: 5
-};
-
 export function reducer(state = {}, action) {
     if (action.type == 'GET_USER_INFO') {
         return Object.assign({}, state, {
@@ -62,30 +54,21 @@ export function reducer(state = {}, action) {
     }
 
     if (action.type == 'REJECT_FRIEND_REQUEST') {
-        const otherUser = Object.assign({}, state.otherUser, {
-            friendshipStatus: 0,
-            sender: null,
-            recipient: null
+        state = Object.assign({}, state, {
+            otherUser: resetOtherUserFriendshipInfo(state)
         })
-        state = Object.assign({}, state, { otherUser })
     }
 
     if (action.type == 'TERMINATE_FRIEND_REQUEST') {
-        const otherUser = Object.assign({}, state.otherUser, {
-            friendshipStatus: 0,
-            sender: null,
-            recipient: null
+        state = Object.assign({}, state, {
+            otherUser: resetOtherUserFriendshipInfo(state)
         })
-        state = Object.assign({}, state, { otherUser })
     }
 
     if (action.type == 'CANCEL_FRIEND_REQUEST') {
-        const otherUser = Object.assign({}, state.otherUser, {
-            friendshipStatus: 0,
-            sender: null,
-            recipient: null
+        state = Object.assign({}, state, {
+            otherUser: resetOtherUserFriendshipInfo(state)
         })
-        state = Object.assign({}, state, { otherUser })
     }
 
     if (action.type == 'GET_FRIENDS') {
@@ -117,4 +100,12 @@ export function reducer(state = {}, action) {
     }
 
     return state;
+}
+
+function resetOtherUserFriendshipInfo({ otherUser }) {
+    return Object.assign({}, otherUser, {
+        friendshipStatus: 0,
+        sender: null,
+        recipient: null
+    })
 }
