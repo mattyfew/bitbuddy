@@ -16,19 +16,29 @@ export default class FriendButton extends Component {
     }
 
     handleClick(str) {
-        const { dispatch, friendshipStatus, userId, otherUserId } = this.props
+        const { dispatch, friendshipStatus, userId, otherUserId, sender, recipient } = this.props
+        console.log("HANDEL CLICK", typeof sender, typeof userId);
 
         switch (friendshipStatus) {
             case 0: // null
                 dispatch(sendFriendRequest(otherUserId, friendshipStatus))
                 break;
             case 1: // pending
+                console.log("case 1", sender, userId, str);
+
                 if (str === 'reject') {
-                    console.log("REJECTING!");
-                    dispatch(rejectFriendRequest(otherUserId))
+                    if (str === 'reject') {
+                        console.log("REJECTING!");
+                        dispatch(rejectFriendRequest(otherUserId))
+                    } else {
+                        console.log("ACCEPTING!");
+                        dispatch(acceptFriendRequest(otherUserId))
+                    }
                 } else {
-                    console.log("ACCEPTING!");
-                    dispatch(acceptFriendRequest(otherUserId))
+                    if (sender === userId) {
+                        console.log("CANCELLING!");
+                        dispatch(cancelFriendRequest(otherUserId))
+                    }
                 }
                 break;
             case 2: // accepted
