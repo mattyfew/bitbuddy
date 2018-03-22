@@ -3,8 +3,13 @@ const db = require('./db/db')
 
 router.post('/send-friend-request', (req, res) => {
     db.sendFriendRequest(req.session.user.id, req.body.otherUserId, req.body.oldStatus)
-    .then(() => {
-        res.json({ success: true })
+    .then(results => {
+
+        res.json({
+            success: true,
+            sender: results.sender,
+            recipient: results.recipient
+        })
     })
 })
 
@@ -34,6 +39,15 @@ router.post('/terminate-friendship', (req, res) => {
     db.terminateFriendship(req.session.user.id, req.body.otherUserId)
     .then(() => {
         res.json({ success: true })
+    })
+})
+
+router.get('/get-friends', (req, res) => {
+    console.log("inside get-friends");
+    db.getFriends(req.session.user.id)
+    .then(friends => {
+        console.log("results from getFriends", friends)
+        res.json({ friends })
     })
 })
 

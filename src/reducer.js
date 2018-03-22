@@ -41,12 +41,15 @@ export function reducer(state = {}, action) {
 
 
 
-    // FRIENDS
+    // FRIENDS REDUCER
     // =======================================
 
     if (action.type == 'SEND_FRIEND_REQUEST') {
+        console.log("inside SEND_FRIEND_REQUEST");
         const otherUser = Object.assign({}, state.otherUser, {
-            friendshipStatus: 1
+            friendshipStatus: 1,
+            sender: action.sender,
+            recipient: action.recipient
         })
         state = Object.assign({}, state, { otherUser })
     }
@@ -79,6 +82,14 @@ export function reducer(state = {}, action) {
         state = Object.assign({}, state, { otherUser })
     }
 
+    if (action.type == 'GET_FRIENDS') {
+        // const otherUser = Object.assign({}, state.otherUser, {
+        //     friendshipStatus: 5
+        // })
+        console.log("in reducer GET_FRIENDS");
+        state = Object.assign({}, state, {})
+    }
+
 
 
 
@@ -87,9 +98,7 @@ export function reducer(state = {}, action) {
     // =======================================
 
     if (action.type == 'CHAT_MESSAGES') {
-        state = Object.assign({}, state, {
-            chatMessages: action.messages
-        })
+        state = Object.assign({}, state, { chatMessages: action.messages })
     }
 
     if (action.type == 'CHAT_MESSAGE') {

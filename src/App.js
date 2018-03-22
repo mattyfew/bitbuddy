@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import Profile from './Profile'
 import OtherProfile from './OtherProfile'
 import Chat from './Chat'
+import Friends from './Friends'
 
 class App extends Component {
     constructor(props) {
@@ -48,7 +49,7 @@ class App extends Component {
                                      <li><Link to="/chat">Chat</Link></li>
                                      <li><Link to="/user/2">user2</Link></li>
                                      <li><Link to="/user/3">user3</Link></li>
-                                     <li><Link to="/user/4">user4</Link></li>
+                                     <li><Link to="/friends">Friends</Link></li>
                                      <li><a href="/logout">Logout</a></li>
                                  </ul>
                              </nav>
@@ -63,7 +64,8 @@ class App extends Component {
                                 />
                              } />
                              <Route exact path="/user/:userId" component={ OtherProfile } />
-                             <Route exact path="/chat" component={Chat} />
+                             <Route exact path="/chat" component={ Chat } />
+                             <Route exact path="/friends" component={ Friends } />
                              <Redirect path="*" to="/" />
                          </Switch>
                      </div>

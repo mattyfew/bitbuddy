@@ -281,3 +281,25 @@ exports.terminateFriendship = function(userId, otherUserId) {
         })
     })
 }
+
+exports.getFriends = function(userId) {
+    return new Promise(function(resolve, reject) {
+        const q = `
+            SELECT users.id, firstname, lastname, profilepic, status, username
+            FROM friendships
+            JOIN users
+            ON (status = 1 AND recipient_id = $1 AND sender_id = users.id)
+            OR (status = 2 AND recipient_id = $1 AND sender_id = users.id)
+            OR (status = 2 AND sender_id = $1 AND recipient_id = users.id)
+        `
+        const params = [ userId ]
+
+        db.query(q, params)
+        .then(results => resolve(results.rows))
+        .catch(e => {
+            console.log("There was an error in getFriends", e)
+            reject(e)
+        })
+
+    })
+}

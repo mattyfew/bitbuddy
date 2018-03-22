@@ -44,14 +44,16 @@ export function updateBio(bio) {
 
 
 
-// FRIENDS
+// FRIENDS ACTIONS
 // =======================================
 
 export function sendFriendRequest(otherUserId, oldStatus) {
     return axios.post('/send-friend-request', { action: 'SEND_FRIEND_REQUEST', otherUserId, oldStatus })
-        .then(() => {
+        .then(resp => {
             return {
                 type: 'SEND_FRIEND_REQUEST',
+                sender: resp.data.sender,
+                recipient: resp.data.recipient
             }
         })
 }
@@ -92,6 +94,14 @@ export function terminateFriendship(otherUserId) {
         })
 }
 
+export function getFriends() {
+    return axios.get('/get-friends')
+        .then(() => {
+            return {
+                type: 'GET_FRIENDS'
+            }
+        })
+}
 
 
 

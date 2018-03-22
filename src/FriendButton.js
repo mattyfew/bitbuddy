@@ -51,6 +51,8 @@ export default class FriendButton extends Component {
         const { sender, recipient, userId, otherUserId, friendshipStatus } = this.props
         let text, showBothButtons = false;
 
+        console.log("rendering button", friendshipStatus, sender, recipient);
+
         switch (friendshipStatus) {
             case 0: // null
                 text = 'Make Friend Request'
