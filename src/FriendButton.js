@@ -6,33 +6,36 @@ import {
 export default class FriendButton extends Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            showCancelAndAccept: false
-        }
+        this.state = { showRecipientButtons: false }
 
         this.renderButton = this.renderButton.bind(this)
         this.handleClick = this.handleClick.bind(this)
     }
 
+    componentDidMount() {
+        if (this.props.recipient === this.props.userId && this.props.friendshipStatus === 1) {
+            this.setState({ showRecipientButtons: true })
+        }
+    }
+
     handleClick(str) {
         const { dispatch, friendshipStatus, userId, otherUserId, sender, recipient } = this.props
-        console.log("HANDEL CLICK", typeof sender, typeof userId);
+        const { showRecipientButtons } = this.state
 
         switch (friendshipStatus) {
             case 0: // null
                 dispatch(sendFriendRequest(otherUserId, friendshipStatus))
                 break;
             case 1: // pending
-                console.log("case 1", sender, userId, str);
-
-                if (str === 'reject') {
+                if (showRecipientButtons) {
                     if (str === 'reject') {
                         console.log("REJECTING!");
                         dispatch(rejectFriendRequest(otherUserId))
-                    } else {
+                        this.setState({ showRecipientButtons: false })
+                    } else if (str === 'accept') {
                         console.log("ACCEPTING!");
                         dispatch(acceptFriendRequest(otherUserId))
+                        this.setState({ showRecipientButtons: false })
                     }
                 } else {
                     if (sender === userId) {
@@ -53,15 +56,15 @@ export default class FriendButton extends Component {
             case 5: // cancelled
                 dispatch(sendFriendRequest(otherUserId, friendshipStatus))
                 break;
-            default:
         }
     }
 
     renderButton() {
         const { sender, recipient, userId, otherUserId, friendshipStatus } = this.props
-        let text, showBothButtons = false;
+        const { showRecipientButtons } = this.state
+        let text
 
-        console.log("rendering button", friendshipStatus, sender, recipient);
+        console.log("rendering button", friendshipStatus, sender, recipient)
 
         switch (friendshipStatus) {
             case 0: // null
@@ -71,11 +74,11 @@ export default class FriendButton extends Component {
                 if (sender === userId) {
                     text = 'Cancel Friend Request'
                 } else if (recipient === userId) {
-                    text = 'Accept Friend Request'
-                    showBothButtons = true
+                    // this.setState({ showRecipientButtons: true })
                 }
                 break;
             case 2: // accepted
+                console.log("inside case 2, should say Terminate Friendship", this.state);
                 text = 'Terminate Friendship'
                 break;
             case 3: // rejected
@@ -87,16 +90,20 @@ export default class FriendButton extends Component {
             case 5: // cancelled
                 text = 'Make Friend Request'
                 break;
-            default:
-                text = 'Make Friend Request'
         }
 
         return (
             <div>
-                { showBothButtons && <button onClick={ () => {
-                    this.handleClick("reject")
-                }}>Reject</button> }
-                <button onClick={ this.handleClick }>{ text }</button>
+                { showRecipientButtons &&
+                    <div>
+                        <button onClick={ () => this.handleClick("reject") }>Reject</button>
+                        <button onClick={ () => this.handleClick("accept") }>Accept</button>
+                    </div>
+                }
+
+                { !showRecipientButtons &&
+                    <button onClick={ () => this.handleClick() }>{ text }</button>
+                }
             </div>
         )
     }

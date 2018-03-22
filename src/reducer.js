@@ -63,21 +63,27 @@ export function reducer(state = {}, action) {
 
     if (action.type == 'REJECT_FRIEND_REQUEST') {
         const otherUser = Object.assign({}, state.otherUser, {
-            friendshipStatus: 3
+            friendshipStatus: 0,
+            sender: null,
+            recipient: null
         })
         state = Object.assign({}, state, { otherUser })
     }
 
     if (action.type == 'TERMINATE_FRIEND_REQUEST') {
         const otherUser = Object.assign({}, state.otherUser, {
-            friendshipStatus: 4
+            friendshipStatus: 0,
+            sender: null,
+            recipient: null
         })
         state = Object.assign({}, state, { otherUser })
     }
 
     if (action.type == 'CANCEL_FRIEND_REQUEST') {
         const otherUser = Object.assign({}, state.otherUser, {
-            friendshipStatus: 5
+            friendshipStatus: 0,
+            sender: null,
+            recipient: null
         })
         state = Object.assign({}, state, { otherUser })
     }
