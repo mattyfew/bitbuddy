@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-    sendFriendRequest, acceptFriendRequest, cancelFriendRequest, rejectFriendRequest, terminateFriendship
+    sendFriendRequest, updateFriendRequest
 } from './actions'
 
 export default class FriendButton extends Component {
@@ -29,23 +29,20 @@ export default class FriendButton extends Component {
             case 1: // pending
                 if (showRecipientButtons) {
                     if (str === 'reject') {
-                        console.log("REJECTING!");
-                        dispatch(rejectFriendRequest(otherUserId))
+                        dispatch(updateFriendRequest(otherUserId, 'REJECT_FRIEND_REQUEST'))
                         this.setState({ showRecipientButtons: false })
                     } else if (str === 'accept') {
-                        console.log("ACCEPTING!");
-                        dispatch(acceptFriendRequest(otherUserId))
+                        dispatch(updateFriendRequest(otherUserId, 'ACCEPT_FRIEND_REQUEST'))
                         this.setState({ showRecipientButtons: false })
                     }
                 } else {
                     if (sender === userId) {
-                        console.log("CANCELLING!");
-                        dispatch(cancelFriendRequest(otherUserId))
+                        dispatch(updateFriendRequest(otherUserId, 'CANCEL_FRIEND_REQUEST'))
                     }
                 }
                 break;
             case 2: // accepted
-                dispatch(terminateFriendship(otherUserId))
+                dispatch(updateFriendRequest(otherUserId, 'TERMINATE_FRIENDSHIP'))
                 break;
             case 3: // rejected
                 dispatch(sendFriendRequest(otherUserId, friendshipStatus))
@@ -64,8 +61,6 @@ export default class FriendButton extends Component {
         const { showRecipientButtons } = this.state
         let text
 
-        console.log("rendering button", friendshipStatus, sender, recipient)
-
         switch (friendshipStatus) {
             case 0: // null
                 text = 'Make Friend Request'
@@ -73,12 +68,9 @@ export default class FriendButton extends Component {
             case 1: // pending
                 if (sender === userId) {
                     text = 'Cancel Friend Request'
-                } else if (recipient === userId) {
-                    // this.setState({ showRecipientButtons: true })
                 }
                 break;
             case 2: // accepted
-                console.log("inside case 2, should say Terminate Friendship", this.state);
                 text = 'Terminate Friendship'
                 break;
             case 3: // rejected

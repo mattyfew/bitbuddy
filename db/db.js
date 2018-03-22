@@ -208,76 +208,35 @@ exports.sendFriendRequest = function(userId, otherUserId, oldStatus) {
     })
 }
 
-exports.acceptFriendRequest = function(userId, otherUserId) {
+exports.updateFriendRequest = function(userId, otherUserId, action) {
     return new Promise(function(resolve, reject) {
+
+        switch (action) {
+            case 'ACCEPT_FRIEND_REQUEST':
+                status = 2
+                break;
+            case 'REJECT_FRIEND_REQUEST':
+                status = 3
+                break;
+            case 'TERMINATE_FRIENDSHIP':
+                status = 4
+                break;
+            case 'CANCEL_FRIEND_REQUEST':
+                status = 5
+                break;
+        }
+
         const q = `
             UPDATE friendships
             SET status = $1
             WHERE (recipient_id = $2 OR sender_id = $2)
             AND (recipient_id = $3 OR sender_id = $3)`
-        const params = [ 2, userId, otherUserId ]
+        const params = [ status, userId, otherUserId ]
 
         db.query(q, params)
         .then(() => resolve())
         .catch(e => {
-            console.log("There was an error in acceptFriendRequest", e)
-            reject(e)
-        })
-    })
-}
-
-exports.cancelFriendRequest = function(userId, otherUserId) {
-    return new Promise(function(resolve, reject) {
-        const q = `
-            UPDATE friendships
-            SET status = $1
-            WHERE (recipient_id = $2 OR sender_id = $2)
-            AND (recipient_id = $3 OR sender_id = $3)
-        `
-        const params = [ 5, userId, otherUserId ]
-
-        db.query(q, params)
-        .then(() => resolve())
-        .catch(e => {
-            console.log("There was an error in cancelFriendRequest", e)
-            reject(e)
-        })
-    })
-}
-
-exports.rejectFriendRequest = function(userId, otherUserId) {
-    return new Promise(function(resolve, reject) {
-        const q = `
-            UPDATE friendships
-            SET status = $1
-            WHERE (recipient_id = $2 OR sender_id = $2)
-            AND (recipient_id = $3 OR sender_id = $3)
-        `
-        const params = [ 3, userId, otherUserId ]
-
-        db.query(q, params)
-        .then(() => resolve())
-        .catch(e => {
-            console.log("There was an error in cancelFriendRequest", e)
-            reject(e)
-        })
-    })
-}
-
-exports.terminateFriendship = function(userId, otherUserId) {
-    return new Promise(function(resolve, reject) {
-        const q = `
-            UPDATE friendships
-            SET status = $1
-            WHERE (recipient_id = $2 OR sender_id = $2)
-            AND (recipient_id = $3 OR sender_id = $3)
-        `
-        const params = [ 4, userId, otherUserId ]
-
-        db.query(q, params)
-        .then(() => resolve())
-        .catch(e => {
-            console.log("There was an error in terminateFriendship", e)
+            console.log("There was an error in updateFriendRequest", e)
             reject(e)
         })
     })

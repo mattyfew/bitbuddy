@@ -37,7 +37,6 @@ export function reducer(state = {}, action) {
     // =======================================
 
     if (action.type == 'SEND_FRIEND_REQUEST') {
-        console.log("inside SEND_FRIEND_REQUEST");
         const otherUser = Object.assign({}, state.otherUser, {
             friendshipStatus: 1,
             sender: action.sender,
@@ -53,19 +52,11 @@ export function reducer(state = {}, action) {
         state = Object.assign({}, state, { otherUser })
     }
 
-    if (action.type == 'REJECT_FRIEND_REQUEST') {
-        state = Object.assign({}, state, {
-            otherUser: resetOtherUserFriendshipInfo(state)
-        })
-    }
-
-    if (action.type == 'TERMINATE_FRIEND_REQUEST') {
-        state = Object.assign({}, state, {
-            otherUser: resetOtherUserFriendshipInfo(state)
-        })
-    }
-
-    if (action.type == 'CANCEL_FRIEND_REQUEST') {
+    if (
+        action.type == 'REJECT_FRIEND_REQUEST' ||
+        action.type == 'TERMINATE_FRIENDSHIP' ||
+        action.type == 'CANCEL_FRIEND_REQUEST'
+    ) {
         state = Object.assign({}, state, {
             otherUser: resetOtherUserFriendshipInfo(state)
         })
@@ -74,7 +65,6 @@ export function reducer(state = {}, action) {
     if (action.type == 'GET_FRIENDS') {
         const pendingFriends = action.friends.filter(item => item.status === 1)
         const currentFriends = action.friends.filter(item => item.status === 2)
-        console.log("in reducer GET_FRIENDS", pendingFriends);
 
         state = Object.assign({}, state, {
             pendingFriends,
