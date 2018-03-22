@@ -22,6 +22,9 @@ app.use(bodyParser.json())
 const cookieSession = require('cookie-session')
 
 const diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
     filename: function(req, file, callback) {
         uidSafe(24).then(function(uid) {
             callback(null, uid + path.extname(file.originalname))
@@ -98,9 +101,6 @@ io.on('connection', function(socket) {
         })
     })
 })
-// app.use((req) => {
-//     console.log(req.url);
-// })
 
 app.use('/', require('./friendships'))
 
@@ -140,17 +140,20 @@ app.post('/login-user', (req, res) => {
     .catch(err => console.log("There was an error in loginUser", err) )
 })
 
-app.post('/uploadImage', uploader.single('profilepic'), function(req, res) {
+app.post('/upload-image', uploader.single('file'), s3.upload, function(req, res) {
     if (req.file) {
-        s3.upload(req.file).then(function() {
-            db.saveImage(req.file.filename, req.session.user.email).then(function(image) {
-                res.json({success: true, image: image});
-            })
+        db.saveImage(req.file.filename, req.session.user.email)
+        .then(function(image) {
+            console.log("are we here", req.file.filename );
+            res.json({ success: true, image: req.file.filename })
         })
     } else {
-        res.json({success: false});
+        res.json({
+            success: false,
+            error: 'Something went wrong in upload-image'
+        })
     }
-});
+})
 
 app.get('/get-user-info', (req, res) => {
     db.getUserInfo(req.session.user.id)

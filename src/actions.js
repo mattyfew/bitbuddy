@@ -22,8 +22,7 @@ export function getOtherUserInfo(userId) {
 }
 
 export function uploadImage(file) {
-    console.log("running action uploadImage");
-    return axios.post('/uploadImage', file)
+    return axios.post('/upload-image', file)
         .then( ({ data }) => {
             return {
                 type: 'UPLOAD_IMAGE'

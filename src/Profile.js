@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { uploadImage } from './actions'
 
-export default class Profile extends Component {
+class Profile extends Component {
     constructor(props) {
         super(props)
 
@@ -26,8 +28,8 @@ export default class Profile extends Component {
     handleSubmitImg(e) {
         e.preventDefault()
         let formData = new FormData();
-        formData.append('profilepic', this.state.profilepic);
-        this.props.submitEditBio(formData)
+        formData.append('file', this.state.profilepic);
+        this.props.dispatch(uploadImage(formData))
     }
 
     handleFileChange(e) {
@@ -36,9 +38,7 @@ export default class Profile extends Component {
         }, () => console.log('new state', this.state))
     }
 
-
     render() {
-        console.log("rendering propfile", this.props);
         const { id, firstname, lastname, email, username, bio, imgUrl } = this.props.user
         return (
             <div>
@@ -52,7 +52,6 @@ export default class Profile extends Component {
                         <p onClick={ this.toggleShowUploadImage }>Upload new image</p>
                         { this.state.showUploadImage &&
                             <form onSubmit={ this.handleSubmitImg }>
-                                <p>Upload a new image</p>
                                 <input onChange={ this.handleFileChange } type="file" placeholder="upload an image" name="profilepic" />
                                 <button type="submit">Submit</button>
                             </form>
@@ -72,3 +71,5 @@ export default class Profile extends Component {
         )
     }
 }
+
+export default connect(null)(Profile)
