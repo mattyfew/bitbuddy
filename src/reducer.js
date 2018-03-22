@@ -83,11 +83,14 @@ export function reducer(state = {}, action) {
     }
 
     if (action.type == 'GET_FRIENDS') {
-        // const otherUser = Object.assign({}, state.otherUser, {
-        //     friendshipStatus: 5
-        // })
-        console.log("in reducer GET_FRIENDS");
-        state = Object.assign({}, state, {})
+        const pendingFriends = action.friends.filter(item => item.status === 1)
+        const currentFriends = action.friends.filter(item => item.status === 2)
+        console.log("in reducer GET_FRIENDS", pendingFriends);
+
+        state = Object.assign({}, state, {
+            pendingFriends,
+            currentFriends
+        })
     }
 
 

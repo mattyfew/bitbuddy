@@ -96,9 +96,10 @@ export function terminateFriendship(otherUserId) {
 
 export function getFriends() {
     return axios.get('/get-friends')
-        .then(() => {
+        .then(resp => {
             return {
-                type: 'GET_FRIENDS'
+                type: 'GET_FRIENDS',
+                friends: resp.data.friends
             }
         })
 }
