@@ -8,6 +8,7 @@ import Profile from './Profile'
 import OtherProfile from './OtherProfile'
 import Chat from './Chat'
 import Friends from './Friends'
+import OnlineFriends from './OnlineFriends'
 
 class App extends Component {
     constructor(props) {
@@ -66,6 +67,7 @@ class App extends Component {
                              <Route exact path="/user/:userId" component={ OtherProfile } />
                              <Route exact path="/chat" component={ Chat } />
                              <Route exact path="/friends" component={ Friends } />
+                             <Route exact path="/online-friends" component={ OnlineFriends } />
                              <Redirect path="*" to="/" />
                          </Switch>
                      </div>

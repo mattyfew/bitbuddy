@@ -89,4 +89,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Chat);
+export default connect(mapStateToProps)(Chat)

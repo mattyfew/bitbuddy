@@ -96,19 +96,21 @@ exports.saveImage = function(filename, email) {
 }
 
 exports.getUsersByIds = function(ids) {
-    return new Promise((resolve, reject) => {
-        const q = `
-            SELECT id, firstname, lastname, email, username, profilepic
-            FROM users
-            WHERE id = ANY($1)`
-        const params = [ ids ]
+    console.log("ids", ids);
+    const q = `
+        SELECT id, firstname, lastname, email, username, profilepic
+        FROM users
+        WHERE id = ANY($1)`
+    const params = [ ids ]
 
-        db.query(q, params)
-        .then(results => resolve(results.rows))
-        .catch(e => {
-            console.log("There was an error in getUsersByIds", e)
-            reject(e)
-        })
+    return db.query(q, params)
+    .then(results => {
+        console.log(results.rows);
+        return results.rows
+    })
+    .catch(e => {
+        console.log("There was an error in getUsersByIds", e)
+        reject(e)
     })
 }
 

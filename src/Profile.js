@@ -27,15 +27,13 @@ class Profile extends Component {
 
     handleSubmitImg(e) {
         e.preventDefault()
-        let formData = new FormData();
-        formData.append('file', this.state.profilepic);
+        let formData = new FormData()
+        formData.append('file', this.state.profilepic)
         this.props.dispatch(uploadImage(formData))
     }
 
     handleFileChange(e) {
-        this.setState({
-            [e.target.name]: e.target.files[0]
-        }, () => console.log('new state', this.state))
+        this.setState({ [e.target.name]: e.target.files[0] })
     }
 
     render() {
@@ -50,6 +48,7 @@ class Profile extends Component {
                         <h2>{username}</h2>
                         <img src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
                         <p onClick={ this.toggleShowUploadImage }>Upload new image</p>
+                        
                         { this.state.showUploadImage &&
                             <form onSubmit={ this.handleSubmitImg }>
                                 <input onChange={ this.handleFileChange } type="file" placeholder="upload an image" name="profilepic" />

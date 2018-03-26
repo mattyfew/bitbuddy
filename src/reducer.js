@@ -1,4 +1,8 @@
-export function reducer(state = {}, action) {
+const INITIAL_STATE = {
+    onlineUsers: []
+}
+
+export function reducer(state = INITIAL_STATE, action) {
     if (action.type == 'GET_USER_INFO') {
         return Object.assign({}, state, {
             user: action.user
@@ -75,6 +79,37 @@ export function reducer(state = {}, action) {
 
 
 
+    // ONLINE USERS
+    // =======================================
+
+    if (action.type == 'ONLINE_USERS') {
+        state = Object.assign({}, state, {
+            onlineUsers: action.users
+        })
+    }
+
+    if (action.type == 'USER_JOINED') {
+        console.log("inside USER_JOINED", action);
+        const newUsers = state.onlineUsers.push(action.user)
+
+        state = Object.assign({}, state, {
+
+        })
+    }
+
+    if (action.type == 'USER_LEFT') {
+        const newUsers = state.onlineUsers.filter(user => {
+            return user.id != action.userId
+        })
+
+        state = Object.assign({}, state, {
+            onlineUsers: newUsers
+        })
+    }
+
+
+
+
 
     // CHAT
     // =======================================
@@ -90,12 +125,14 @@ export function reducer(state = {}, action) {
     }
 
     return state;
-}
 
-function resetOtherUserFriendshipInfo({ otherUser }) {
-    return Object.assign({}, otherUser, {
-        friendshipStatus: 0,
-        sender: null,
-        recipient: null
-    })
+
+
+    function resetOtherUserFriendshipInfo({ otherUser }) {
+        return Object.assign({}, otherUser, {
+            friendshipStatus: 0,
+            sender: null,
+            recipient: null
+        })
+    }
 }

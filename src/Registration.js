@@ -20,21 +20,15 @@ export default class Registration extends Component {
 
     handleClick(e){
         e.preventDefault()
-        console.log("running handleClick", this.state);
 
         axios.post('/register-new-user', this.state)
-            .then((response) => {
-                console.log("success, redirecting to /", response);
-                location.replace('/')
-            })
+            .then((response) => location.replace('/'))
 
         this.setState({ firstname: '', lastname: '', email: '', username: '', password: '' })
     }
 
     handleChange(e) {
-        this.setState( { [e.target.name]: e.target.value },
-            () => console.log("the new state is: ", this.state)
-        )
+        this.setState({ [e.target.name]: e.target.value })
     }
 
     render() {

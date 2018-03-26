@@ -24,7 +24,7 @@ class OtherProfile extends Component {
     }
 
     componentDidUpdate(nextProps){
-        const userId = this.props.match.params.userId;
+        const userId = this.props.match.params.userId
 
         if (userId != this.state.userId){
             this.setState({ userId })

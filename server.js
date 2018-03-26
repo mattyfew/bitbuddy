@@ -37,56 +37,85 @@ const uploader = multer({
         fileSize: 2097152
     }
 })
-app.use(cookieSession({
+
+const cookieSessionMiddleware = cookieSession({
     secret: 'raisins',
-    maxAge: 1000 * 60 * 60 * 24 * 14
-}))
+    maxAge: 1000 * 60 * 60 * 24 * 90
+})
+app.use(cookieSessionMiddleware)
+io.use(function(socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next)
+})
+
 if (process.env.NODE_ENV != 'production') {
     app.use(
         '/bundle.js',
         require('http-proxy-middleware')({
             target: 'http://localhost:8081/'
         })
-    );
+    )
 } else {
     app.use('/bundle.js', (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
 app.use(express.static('public'))
 
+
+
+// ======================================================
+// ====================== SOCKET.IO =====================
+// ======================================================
+
 let onlineUsers = [], messages = [];
 
 const getOnlineUsers = () => {
-    let ids = onlineUsers.map(item => item.id)
+    let ids = onlineUsers.map(user => user.userId)
 
-    //here we are filtering the ids
-    ids = ids.filter((id, i) => ids.indexOf(id) == i)
+    ids = ids.filter((id, i) =>  {
+        return ids.indexOf(id) == i
+    })
     return db.getUsersByIds(ids)
 }
 
 io.on('connection', function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`)
-    const session = getSessionFromSocket(socket, { secret: 'raisins', })
+    if (!socket.request.session || !socket.request.session.user) {
+        return socket.disconnect(true);
+    }
+    const userId = socket.request.session.user.id
 
-    if (!session || !session.user) { return socket.disconnect(true); }
+    onlineUsers.push({
+        userId,
+        socketId: socket.id
+    })
+
+    getOnlineUsers()
+    .then(onlineUsersObj => {
+        socket.emit('onlineUsers', onlineUsersObj)
+    })
+    db.getUserInfo(userId)
+    .then(user => {
+        socket.emit('userJoined', user)
+    })
+
+    socket.on('disconnect', () => {
+        console.log(`socket with the id ${socket.id} is now disconnected`)
+
+        onlineUsers = onlineUsers.filter(user => {
+            return user.userId != userId
+        })
+
+        console.log("newOnlineUsers", onlineUsers)
+        socket.broadcast.emit('userLeft', userId)
+    })
 
     // some() returns a boolean based on if one of the elements in the
     // array passes the condition specified in the callback.
     // we use it here to check if the socket.id is already in the list of
     // online users, we don't want them to go any farther
-    if (onlineUsers.some(item => item.socketId == socket.id)) { return }
+    // if (onlineUsers.some(item => item.socketId == socket.id)) { return }
 
-    const userId = session.user.id;
 
-    socket.emit('chats', messages)
-
-    onlineUsers.push({
-        id: session.user.id,
-        socketId: socket.id
-    })
-
-    socket.on('disconnect', () => {
-        console.log(`socket with the id ${socket.id} is now disconnected`)
-    })
+    // socket.emit('chats', messages)
 
     socket.on('chat', msg => {
         const sender = onlineUsers.find(user => user.socketId == socket.id)
@@ -144,7 +173,6 @@ app.post('/upload-image', uploader.single('file'), s3.upload, function(req, res)
     if (req.file) {
         db.saveImage(req.file.filename, req.session.user.email)
         .then(function(image) {
-            console.log("are we here", req.file.filename );
             res.json({ success: true, image: req.file.filename })
         })
     } else {

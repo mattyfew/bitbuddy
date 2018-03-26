@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import {
-    sendFriendRequest, updateFriendRequest
-} from './actions'
+import { sendFriendRequest, updateFriendRequest } from './actions'
 
 export default class FriendButton extends Component {
     constructor(props) {
@@ -40,19 +38,15 @@ export default class FriendButton extends Component {
                         dispatch(updateFriendRequest(otherUserId, 'CANCEL_FRIEND_REQUEST'))
                     }
                 }
-                break;
+                break
             case 2: // accepted
                 dispatch(updateFriendRequest(otherUserId, 'TERMINATE_FRIENDSHIP'))
-                break;
+                break
             case 3: // rejected
-                dispatch(sendFriendRequest(otherUserId, friendshipStatus))
-                break;
             case 4: // terminated
-                dispatch(sendFriendRequest(otherUserId, friendshipStatus))
-                break;
             case 5: // cancelled
                 dispatch(sendFriendRequest(otherUserId, friendshipStatus))
-                break;
+                break
         }
     }
 
@@ -64,24 +58,20 @@ export default class FriendButton extends Component {
         switch (friendshipStatus) {
             case 0: // null
                 text = 'Make Friend Request'
-                break;
+                break
             case 1: // pending
                 if (sender === userId) {
                     text = 'Cancel Friend Request'
                 }
-                break;
+                break
             case 2: // accepted
                 text = 'Terminate Friendship'
-                break;
+                break
             case 3: // rejected
-                text = 'Make Friend Request'
-                break;
             case 4: // terminated
-                text = 'Make Friend Request'
-                break;
             case 5: // cancelled
                 text = 'Make Friend Request'
-                break;
+                break
         }
 
         return (
