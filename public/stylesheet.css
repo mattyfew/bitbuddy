@@ -104,11 +104,23 @@ nav li { padding-right: 15px; }
     padding: 20px;
 }
 .chat-message {
-    padding: 24px;
+    padding: 10px;
+    min-height: 30px;
 }
 
 #chat-textarea {
     width: 99%;
     box-sizing: border-box;
     margin: 4px;
+}
+
+.chat-message-username {
+    font-weight: 700;
+    margin-right: 14px;
+    margin-left: 14px;
+}
+.chat-avatar {
+    max-width: 40px;
+    max-height: 40px;
+    float: left;
 }

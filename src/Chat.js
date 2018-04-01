@@ -79,11 +79,14 @@ const ChatForm = props => {
     )
 }
 
-const ChatMessage = props => {
+const ChatMessage = ({ chatMessage }) => {
     return (
         <div className="chat-message">
+            <img src="http://via.placeholder.com/100x100" className="chat-avatar" alt="user-image"/>
             <div className="msg">
-                {props.chatMessage.text}
+                {/*<date>21:46 10/15/2018</date>*/}
+                <span className="chat-message-username">{ chatMessage.username }</span>
+                { chatMessage.text }
             </div>
         </div>
     )
