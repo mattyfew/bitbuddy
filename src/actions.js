@@ -111,6 +111,7 @@ export function fetchFriends() {
 }
 
 export function chatMessages (messages) {
+    console.log("in action chatMessages", messages);
     return {
         type: 'CHAT_MESSAGES',
         messages

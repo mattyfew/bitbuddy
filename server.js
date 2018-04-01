@@ -67,6 +67,13 @@ app.use(express.static('public'))
 
 let onlineUsers = [], messages = [];
 
+messages = [
+    {
+        id: 1,
+        text: 'chatchatchatchatchatchat'
+    }
+]
+
 const getOnlineUsers = () => {
     let ids = onlineUsers.map(user => user.userId)
 
@@ -91,7 +98,9 @@ io.on('connection', function(socket) {
     getOnlineUsers()
     .then(onlineUsersObj => {
         socket.emit('onlineUsers', onlineUsersObj)
+        socket.emit('chatMessages', messages)
     })
+
     db.getUserInfo(userId)
     .then(user => {
         socket.emit('userJoined', user)
@@ -108,6 +117,12 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('userLeft', userId)
     })
 
+    socket.on('chatMessage', msg => {
+
+        console.log("inside chatMessage whatup", msg);
+
+    })
+
     // some() returns a boolean based on if one of the elements in the
     // array passes the condition specified in the callback.
     // we use it here to check if the socket.id is already in the list of
@@ -117,18 +132,18 @@ io.on('connection', function(socket) {
 
     // socket.emit('chats', messages)
 
-    socket.on('chat', msg => {
-        const sender = onlineUsers.find(user => user.socketId == socket.id)
-
-        db.getUsersByIds([ sender.id ]).then(([data]) => {
-            let singleChatMessage = data
-            singleChatMessage.message = msg.message
-            singleChatMessage.timestamp = new Date().toLocaleString()
-            messages.push(singleChatMessage)
-            messages = messages.slice(-10) // limits to just 10 messages
-            io.sockets.emit('chat', singleChatMessage)
-        })
-    })
+    // socket.on('chat', msg => {
+    //     const sender = onlineUsers.find(user => user.socketId == socket.id)
+    //
+    //     db.getUsersByIds([ sender.id ]).then(([data]) => {
+    //         let singleChatMessage = data
+    //         singleChatMessage.message = msg.message
+    //         singleChatMessage.timestamp = new Date().toLocaleString()
+    //         messages.push(singleChatMessage)
+    //         messages = messages.slice(-10) // limits to just 10 messages
+    //         io.sockets.emit('chat', singleChatMessage)
+    //     })
+    // })
 })
 
 app.use('/', require('./friendships'))

@@ -30,7 +30,7 @@ const conf = {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 query: {
-                    presets: [['es2015'], ['react']],
+                    presets: ['stage-0', 'es2015', 'react'],
                     plugins: [
                         'transform-async-to-generator',
                         'transform-object-rest-spread'

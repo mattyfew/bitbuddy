@@ -8,13 +8,16 @@ label {
     width: 150px;
 }
 label:after { content: ": " }
+
+
+
+.main-wrapper { padding: 24px; }
+
 #register-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
-#register-form input { padding: 20px; }
+#register-form input { padding: 20px; width: 75%; }
 #register-form button { display: block; }
 .form-single-input-wrapper { margin: 20px; }
 
@@ -50,6 +53,17 @@ nav a { color: white; text-decoration: none; }
 nav a:hover { color: #1C4CB2; }
 nav li { padding-right: 15px; }
 
+
+.forms {
+    z-index: 10
+}
+#welcome-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+.welcome-container-left {
+    align-self: center;
+}
 
 /* Profile
 ============================*/

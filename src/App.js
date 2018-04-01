@@ -48,8 +48,6 @@ class App extends Component {
                                  <ul>
                                      <li><Link to="/">Home</Link></li>
                                      <li><Link to="/chat">Chat</Link></li>
-                                     <li><Link to="/user/2">user2</Link></li>
-                                     <li><Link to="/user/3">user3</Link></li>
                                      <li><Link to="/friends">Friends</Link></li>
                                      <li><a href="/logout">Logout</a></li>
                                  </ul>
