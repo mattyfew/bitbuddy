@@ -82,6 +82,7 @@ nav li { padding-right: 15px; }
 }
 .profile-left {
     padding: 20px 40px;
+    text-align: center;
 }
 .profile-right {
     background-color: #bdc3c7;

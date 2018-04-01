@@ -8,6 +8,7 @@ class Profile extends Component {
 
         this.state = {
             showUploadImage: false,
+            showBioForm: false,
             profilepic: null
         }
 
@@ -15,6 +16,7 @@ class Profile extends Component {
         this.handleSubmitBio = this.handleSubmitBio.bind(this)
         this.handleSubmitImg = this.handleSubmitImg.bind(this)
         this.handleFileChange = this.handleFileChange.bind(this)
+        this.toggleBio = this.toggleBio.bind(this)
     }
 
     toggleShowUploadImage() {
@@ -23,6 +25,7 @@ class Profile extends Component {
 
     handleSubmitBio() {
         this.props.submitEditBio(this.newBio.value)
+        this.toggleBio()
     }
 
     handleSubmitImg(e) {
@@ -36,19 +39,19 @@ class Profile extends Component {
         this.setState({ [e.target.name]: e.target.files[0] })
     }
 
+    toggleBio() {
+        this.setState({ showBioForm: !this.state.showBioForm })
+    }
+
     render() {
         const { id, firstname, lastname, email, username, bio, imgUrl } = this.props.user
         return (
             <div>
-                <h1>Profile</h1>
-                {/* <img id="banner" src="/coinbase.png" alt="coinbase" /> */}
                 <section id="profile-info">
                     <div className="profile-left">
-                        {/* <img src={ imgUrl } alt={ username }/> */}
                         <h2>{username}</h2>
-                        <img src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
-                        <p onClick={ this.toggleShowUploadImage }>Upload new image</p>
-                        
+                        <img onClick={ this.toggleShowUploadImage } src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
+
                         { this.state.showUploadImage &&
                             <form onSubmit={ this.handleSubmitImg }>
                                 <input onChange={ this.handleFileChange } type="file" placeholder="upload an image" name="profilepic" />
@@ -58,12 +61,16 @@ class Profile extends Component {
                     </div>
 
                     <div className="profile-right">
-                        <p>First Name: { firstname }</p>
-                        <p>Last Name: { lastname }</p>
+                        <p>Name: { firstname } { lastname }</p>
                         <p>Email: { email }</p>
                         <p>Username: { username }</p>
-                        <textarea name="bio" id="bio" defaultValue={ bio } ref={ elem => this.newBio = elem } />
-                        <button onClick={ this.handleSubmitBio }>Submit Changes</button>
+                        <p onClick={ this.toggleBio }>Bio: { bio }</p>
+                        { this.state.showBioForm &&
+                            <React.Fragment>
+                                <textarea name="bio" id="bio" defaultValue={ bio } ref={ elem => this.newBio = elem } />
+                                <button onClick={ this.handleSubmitBio }>Submit Changes</button>
+                            </React.Fragment>
+                        }
                     </div>
                 </section>
             </div>
