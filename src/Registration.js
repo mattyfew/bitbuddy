@@ -53,7 +53,7 @@ export default class Registration extends Component {
 
                     <div className="form-single-input-wrapper">
                         <label htmlFor="password-register">Password</label>
-                        <input onChange={this.handleChange} type="text" name="password" id="password-register" placeholder="password" value={this.state.password}/>
+                        <input onChange={this.handleChange} type="password" name="password" id="password-register" placeholder="password" value={this.state.password}/>
                     </div>
 
                     <div className="form-single-input-wrapper">

@@ -64,7 +64,12 @@ class Profile extends Component {
                         <p>Name: { firstname } { lastname }</p>
                         <p>Email: { email }</p>
                         <p>Username: { username }</p>
-                        <p onClick={ this.toggleBio }>Bio: { bio }</p>
+
+                        { bio
+                            ? <p className="edit-bio" onClick={ this.toggleBio }>Bio: { bio } <i class="fas fa-pencil-alt"></i></p>
+                            : <p className="edit-bio" onClick={ this.toggleBio }>Click to add a bio</p>
+                        }
+
                         { this.state.showBioForm &&
                             <React.Fragment>
                                 <textarea name="bio" id="bio" defaultValue={ bio } ref={ elem => this.newBio = elem } />

@@ -89,7 +89,10 @@ nav li { padding-right: 15px; }
     padding: 25px 40px;
     border-radius: 0 17px 17px 0;
 }
-
+.edit-bio:hover {
+    cursor: pointer;
+    font-weight: 700;
+}
 
 /* Chat
 ============================*/

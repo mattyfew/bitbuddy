@@ -120,7 +120,6 @@ export function reducer(state = INITIAL_STATE, action) {
     }
 
     if (action.type == 'CHAT_MESSAGE') {
-        console.log("we here?", action);
         state = Object.assign({}, state, {
             chatMessages: [ ...state.chatMessages, action.msgData ]
         })

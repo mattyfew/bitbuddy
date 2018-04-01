@@ -9,10 +9,7 @@ export function initSocket(store) {
         socket.on('userJoined', user => store.dispatch(userJoined(user)))
         socket.on('userLeft', userId => store.dispatch(userLeft(userId)))
         socket.on('chatMessages', messages => store.dispatch(chatMessages(messages)))
-        socket.on('chatMessage', messageData =>  {
-            console.log("mero");
-            store.dispatch(chatMessage(messageData))
-        })
+        socket.on('chatMessage', messageData => store.dispatch(chatMessage(messageData)))
     }
     return socket;
 }

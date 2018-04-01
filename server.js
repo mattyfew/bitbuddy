@@ -69,7 +69,7 @@ let onlineUsers = [], messages = [];
 
 messages = [
     {
-        userId: 1,
+        userId: 2,
         username: 'miko',
         text: 'chatchatchatchatchatchat',
         profilepic: null
@@ -250,6 +250,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('*', function(req, res){
+    if (!req.session.user) res.redirect('/welcome/')
+
     res.sendFile(__dirname + '/index.html')
 })
 

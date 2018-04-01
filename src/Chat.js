@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { emit } from './socket'
+import { Link } from 'react-router-dom'
 
 class Chat extends Component {
     constructor(props) {
@@ -82,10 +83,15 @@ const ChatForm = props => {
 const ChatMessage = ({ chatMessage }) => {
     return (
         <div className="chat-message">
-            <img src="http://via.placeholder.com/100x100" className="chat-avatar" alt="user-image"/>
+            <Link to={`/user/${chatMessage.userId}`} >
+                <img src="http://via.placeholder.com/100x100" className="chat-avatar" alt="user-image"/>
+            </Link>
             <div className="msg">
                 {/*<date>21:46 10/15/2018</date>*/}
-                <span className="chat-message-username">{ chatMessage.username }</span>
+
+                <Link to={`/user/${chatMessage.userId}`} >
+                    <span className="chat-message-username">{ chatMessage.username }</span>
+                </Link>
                 { chatMessage.text }
             </div>
         </div>
