@@ -69,8 +69,10 @@ let onlineUsers = [], messages = [];
 
 messages = [
     {
-        id: 1,
-        text: 'chatchatchatchatchatchat'
+        userId: 1,
+        username: 'miko',
+        text: 'chatchatchatchatchatchat',
+        profilepic: null
     }
 ]
 
@@ -117,10 +119,11 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('userLeft', userId)
     })
 
-    socket.on('chatMessage', msg => {
+    socket.on('chatMessage', msgData => {
 
-        console.log("inside chatMessage whatup", msg);
-
+        console.log("inside chatMessage whatup", msgData)
+        messages.push(msgData)
+        io.sockets.emit('chatMessage', msgData)
     })
 
     // some() returns a boolean based on if one of the elements in the

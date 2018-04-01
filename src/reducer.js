@@ -89,7 +89,8 @@ export function reducer(state = INITIAL_STATE, action) {
     }
 
     if (action.type == 'USER_JOINED') {
-        console.log("inside USER_JOINED", action);
+        // TODO: THIS!!
+        // console.log("inside USER_JOINED", action);
         const newUsers = state.onlineUsers.push(action.user)
 
         state = Object.assign({}, state, {
@@ -119,8 +120,9 @@ export function reducer(state = INITIAL_STATE, action) {
     }
 
     if (action.type == 'CHAT_MESSAGE') {
+        console.log("we here?", action);
         state = Object.assign({}, state, {
-            chatMessages: [ ...state.chatMessages, action.message ]
+            chatMessages: [ ...state.chatMessages, action.msgData ]
         })
     }
 

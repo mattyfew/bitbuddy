@@ -89,3 +89,26 @@ nav li { padding-right: 15px; }
     padding: 25px 40px;
     border-radius: 0 17px 17px 0;
 }
+
+
+/* Chat
+============================*/
+
+#chat-container {
+    background-color: #B6F6FF;
+    width: 600px;
+    min-height: 350px;
+    margin: 0 auto;
+}
+.chat-message-container {
+    padding: 20px;
+}
+.chat-message {
+    padding: 24px;
+}
+
+#chat-textarea {
+    width: 99%;
+    box-sizing: border-box;
+    margin: 4px;
+}

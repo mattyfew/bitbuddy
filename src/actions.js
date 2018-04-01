@@ -118,9 +118,10 @@ export function chatMessages (messages) {
     }
 }
 
-export function chatMessage (message) {
+export function chatMessage (msgData) {
+    console.log("here?");
     return {
         type: 'CHAT_MESSAGE',
-        message
+        msgData
     }
 }

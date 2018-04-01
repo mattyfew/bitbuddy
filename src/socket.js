@@ -8,12 +8,15 @@ export function initSocket(store) {
         socket.on('onlineUsers', users => store.dispatch(onlineUsers(users)))
         socket.on('userJoined', user => store.dispatch(userJoined(user)))
         socket.on('userLeft', userId => store.dispatch(userLeft(userId)))
-        socket.on('chats', messages => store.dispatch(chatMessages(messages)))
-        socket.on('chat', messageData => store.dispatch(chatMessage(messageData)))
+        socket.on('chatMessages', messages => store.dispatch(chatMessages(messages)))
+        socket.on('chatMessage', messageData =>  {
+            console.log("mero");
+            store.dispatch(chatMessage(messageData))
+        })
     }
     return socket;
 }
 
-export function emit() {
-    return socket && socket.emit.apply(socket, arguments);
+export function emit(event, data) {
+    socket.emit(event, data)
 }

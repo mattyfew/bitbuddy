@@ -3,27 +3,91 @@ import { connect } from 'react-redux'
 import { emit } from './socket'
 
 class Chat extends Component {
+    constructor(props) {
+        super(props)
+
+        this.scrollToBottom = this.scrollToBottom.bind(this)
+        this.renderChatMessages = this.renderChatMessages.bind(this)
+        this.onKeyDown = this.onKeyDown.bind(this)
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom()
+    }
+
+    scrollToBottom() {
+        const { elem } = this
+        if (elem) {
+            elem.scrollTop = elem.scrollHeight - elem.clientHeight
+        }
+    }
+
+    onKeyDown(e) {
+        if (e.keyCode == 13) {
+            const { id, username, profilepic } = this.props.user
+
+            let text = e.target.value
+            e.target.value = ''
+
+            // TODO: Fix this, this does not give the accurate time
+            function createTimestamp(unixtime) {
+                const newDate = new Date();
+                newDate.setTime(unixtime*1000);
+                return newDate.toUTCString();
+            }
+
+            emit('chatMessage', {
+                userId: id,
+                username,
+                text,
+                profilepic
+                // createdAt: createTimestamp(Date.now())
+            })
+            e.preventDefault()
+        }
+    }
+
+    renderChatMessages() {
+        if (!this.props.chatMessages) {
+            return (<div>Loading...</div>)
+        }
+
+        return this.props.chatMessages.map((chatMessage, i) =>
+            <ChatMessage key={ i } chatMessage={ chatMessage } />
+        )
+    }
+
     render() {
         return (
             <div>
                 <h1>Chit Chat</h1>
+
+                <div id="chat-container">
+                    { this.renderChatMessages() }
+                    <ChatForm user={this.props.user} onKeyDown={ this.onKeyDown }/>
+                </div>
             </div>
         )
     }
 }
 
-// const ChatMessage = ({ message }) => {
-//     return (
-//         <div style={styles.chatMessage} className="chat-message">
-//             <div className="msg">
-//                 <div>
-//                     <span className="user-name">{message.firstname} {message.lastname}</span>
-//                 </div>
-//                 {message.message}
-//             </div>
-//         </div>
-//     )
-// }
+const ChatForm = props => {
+    return (
+        <form>
+            <textarea onKeyDown={ props.onKeyDown } id="chat-textarea" placeholder="enter a chat message" />
+        </form>
+    )
+}
+
+const ChatMessage = props => {
+    return (
+        <div className="chat-message">
+            <div className="msg">
+                {props.chatMessage.text}
+            </div>
+        </div>
+    )
+}
 //
 // class ChatMessages extends Component {
 //     constructor(props){
@@ -79,24 +143,10 @@ class Chat extends Component {
 //     }
 // }
 
-// const styles = {
-//     container: {
-//         backgroundColor: '#d1d8e0',
-//         width: '80%',
-//         margin: '16px auto',
-//         padding: '20px 30px'
-//     },
-//     chatMessage: {
-//         backgroundColor: '#2bcbba',
-//         padding: '16px',
-//         margin: '16px'
-//     }
-// }
-
 function mapStateToProps(state) {
-    console.log("mapStateToProps", state);
     return {
-        messages: state.chatMessages
+        chatMessages: state.chatMessages,
+        user: state.user
     }
 }
 
