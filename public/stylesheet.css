@@ -127,3 +127,14 @@ nav li { padding-right: 15px; }
     max-height: 40px;
     float: left;
 }
+
+/* Spinners
+============================*/
+
+.sweet-loading {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

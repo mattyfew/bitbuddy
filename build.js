@@ -33,7 +33,8 @@ const conf = {
                     presets: ['stage-0', 'es2015', 'react'],
                     plugins: [
                         'transform-async-to-generator',
-                        'transform-object-rest-spread'
+                        'transform-object-rest-spread',
+                        'emotion'
                     ]
                 }
             }

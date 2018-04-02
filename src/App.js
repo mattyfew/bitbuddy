@@ -4,11 +4,14 @@ import { BrowserRouter, Route, Link, Redirect, Switch } from 'react-router-dom'
 import { updateBio, getUserInfo } from './actions'
 import { connect } from 'react-redux'
 
+import { ScaleLoader } from 'react-spinners'
+
 import Profile from './Profile'
 import OtherProfile from './OtherProfile'
 import Chat from './Chat'
 import Friends from './Friends'
 import OnlineFriends from './OnlineFriends'
+
 
 class App extends Component {
     constructor(props) {
@@ -35,7 +38,19 @@ class App extends Component {
         const { user, otherUser } = this.props
 
         if (!user) {
-            return (<div>Loading...</div>)
+            return (
+                <div className='sweet-loading'>
+                  <ScaleLoader
+                    color={'#36D7B7'}
+                    loading={true}
+                    height={50}
+                    width={7}
+                    margin={'2px'}
+                    radius={2}
+                  />
+                </div>
+
+            )
         }
 
         return (

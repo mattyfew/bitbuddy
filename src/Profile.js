@@ -66,7 +66,7 @@ class Profile extends Component {
                         <p>Username: { username }</p>
 
                         { bio
-                            ? <p className="edit-bio" onClick={ this.toggleBio }>Bio: { bio } <i class="fas fa-pencil-alt"></i></p>
+                            ? <p className="edit-bio" onClick={ this.toggleBio }>Bio: { bio } <i className="fas fa-pencil-alt"></i></p>
                             : <p className="edit-bio" onClick={ this.toggleBio }>Click to add a bio</p>
                         }
 
