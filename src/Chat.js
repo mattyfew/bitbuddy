@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { emit } from './socket'
 import { Link } from 'react-router-dom'
+import OnlineFriends from './OnlineFriends'
 
 class Chat extends Component {
     constructor(props) {
@@ -61,7 +62,9 @@ class Chat extends Component {
     render() {
         return (
             <div>
-                <h1>Chit Chat</h1>
+                <div id="online-friends">
+                    <OnlineFriends />
+                </div>
 
                 <div id="chat-container">
                     { this.renderChatMessages() }
@@ -97,60 +100,6 @@ const ChatMessage = ({ chatMessage }) => {
         </div>
     )
 }
-//
-// class ChatMessages extends Component {
-//     constructor(props){
-//         super(props)
-//     }
-//
-//     componentDidUpdate() {
-//         this.scrollToBottom();
-//     }
-//
-//     scrollToBottom() {
-//         const { elem } = this;
-//         if (elem) {
-//             elem.scrollTop = elem.scrollHeight - elem.clientHeight;
-//         }
-//     }
-//
-//     onKeyDown(e) {
-//         if (e.keyCode == 13) {
-//             let msg = e.target.value;
-//             e.target.value = '';
-//             this.props.sendMessage(msg);
-//             e.preventDefault();
-//         }
-//     }
-//
-//     renderChatMessages() {
-//         return this.props.messages.map((msg, i) => <ChatMessage key={ i } message={ msg } />)
-//     }
-//
-//     render() {
-//         if (!this.props.messages){
-//             return <div>Loading chat...</div>
-//         }
-//         return (
-//             <div>
-//                 <div style={styles.container} id="group-chat-container" ref={elem => this.elem = elem}>
-//                     { this.renderChatMessages() }
-//                 </div>
-//
-//                 <textarea onKeyDown={e => this.onKeyDown(e) }></textarea>
-//             </div>
-//         )
-//     }
-// }
-//
-// class Chat extends React.Component {
-//     sendMessage(message) {
-//         emit('chat', { message });
-//     }
-//     render() {
-//         return <ChatMessages messages={this.props.messages} sendMessage={(msg) => this.sendMessage(msg)}/>
-//     }
-// }
 
 function mapStateToProps(state) {
     return {
