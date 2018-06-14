@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+
 
 class OnlineFriends extends Component {
     constructor() {
@@ -15,7 +17,7 @@ class OnlineFriends extends Component {
         return this.props.onlineUsers.map(user => {
             return (
                 <div className="online-user" key={ user.id }>
-                    <p>{ user.firstname} { user.lastname }</p>
+                    <Link to={ `/user/${ user.id }` }><p>{ user.firstname} { user.lastname }</p></Link>
                 </div>
             )
         })

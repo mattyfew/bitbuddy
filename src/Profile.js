@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { uploadImage } from './actions'
+import { Spring } from 'react-spring'
+
 
 class Profile extends Component {
     constructor(props) {

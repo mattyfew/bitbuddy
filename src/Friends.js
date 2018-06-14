@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getFriends } from './actions'
+import { getFriends, updateFriendRequest } from './actions'
+import { Link } from 'react-router-dom'
+
 
 class Friends extends Component {
     constructor() {
@@ -23,7 +25,16 @@ class Friends extends Component {
 
         return friendsArray.map((item, i) => {
             return (
-                <div key={i}>{ item.firstname }</div>
+                <div key={ i }>
+                    <Link to={ `/user/${item.id}` }>{ item.firstname }</Link>
+                    <br />
+                    <button onClick={() => {
+                            this.props.dispatch(updateFriendRequest(item.id, 'ACCEPT_FRIEND_REQUEST'))
+                        }}>Accept</button>
+                    <button onClick={() => {
+                            this.props.dispatch(updateFriendRequest(item.id, 'REJECT_FRIEND_REQUEST'))
+                        }}>Reject</button>
+                </div>
             )
         })
     }

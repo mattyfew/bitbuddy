@@ -2,7 +2,7 @@
     "name": "bitbuddy",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "server.js",
     "scripts": {
         "build": "node build.js",
         "start": "npm run build && node server.js",
@@ -41,6 +41,7 @@
         "react-router-dom": "^4.2.2",
         "react-router-redux": "^4.0.8",
         "react-spinners": "^0.2.6",
+        "react-spring": "^4.2.1",
         "redux": "^3.7.1",
         "redux-devtools-extension": "^2.13.2",
         "redux-promise": "^0.5.3",
