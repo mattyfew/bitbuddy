@@ -21,6 +21,11 @@ label:after { content: ": " }
 #register-form button { display: block; }
 .form-single-input-wrapper { margin: 20px; }
 
+.page {
+    width: 80%;
+    margin: auto;
+}
+
 /* Nav
 ============================*/
 
@@ -33,6 +38,7 @@ label:after { content: ": " }
 }
 #nav-container {
     background: #9b59b6;
+    margin-bottom: 30px
 }
 nav {
     content: "";
@@ -42,9 +48,10 @@ nav {
 .bar {
     display: flex;
     align-items: center;
-    max-width: 1160px;
+    /* max-width: 1160px; */
     margin: 0 auto;
     padding-left: 5px;
+    width: 80%
 }
 .search { flex: 1; }
 .search input { width: 100%; }
@@ -127,6 +134,54 @@ nav li { padding-right: 15px; }
     max-height: 40px;
     float: left;
 }
+
+
+
+
+
+
+
+
+
+/* Friends
+============================*/
+.friends-card {
+    border: 1px solid black;
+    max-width: 250px;
+    padding: 16px;
+}
+.friends-card img {
+    max-width: 30px;
+    max-height: 30px;
+}
+.friends-card-top {
+    position: relative;
+}
+.friends-card-top .full-name {
+    position: absolute;
+    top: 20%;
+    padding-left: 8px;
+}
+.friends-card-bottom {
+    display: flex;
+    justify-content: space-evenly
+}
+.friends-card-bottom button {
+    padding: 16px;
+    font-size: 13px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Spinners
 ============================*/

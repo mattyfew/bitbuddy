@@ -25,7 +25,7 @@ class OnlineFriends extends Component {
 
     render() {
         return (
-            <div>
+            <div className="page">
                 <h1>OnlineFriends</h1>
 
                 <div className="online-friends-container">

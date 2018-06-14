@@ -48,7 +48,7 @@ class Profile extends Component {
     render() {
         const { id, firstname, lastname, email, username, bio, imgUrl } = this.props.user
         return (
-            <div>
+            <div className="page">
                 <section id="profile-info">
                     <div className="profile-left">
                         <h2>{username}</h2>

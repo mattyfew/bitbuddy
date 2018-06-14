@@ -7,33 +7,67 @@ import { Link } from 'react-router-dom'
 class Friends extends Component {
     constructor() {
         super()
-
         this.renderFriends = this.renderFriends.bind(this)
+        this.renderPending = this.renderPending.bind(this)
     }
 
     componentDidMount() {
         this.props.dispatch(getFriends())
     }
 
-    renderFriends(friendsArray) {
+    renderPending(pendingArray) {
+        if (!pendingArray) {
+            return (
+                <div>Loading...</div>
+            )
+        }
 
+        const { dispatch } = this.props
+
+        return pendingArray.map((item, i) => {
+            return (
+                <div className="friends-card" key={ i }>
+
+                    <div className="friends-card-top" >
+                        <Link to={ `/user/${item.id}` }>
+                            <img src={ item.profilepic || 'http://via.placeholder.com/100x100' } />
+                        </Link>
+                        <Link to={ `/user/${item.id}` } className="full-name">{ item.firstname } { item.lastname }</Link>
+                    </div>
+
+                    <div className="friends-card-bottom">
+                        <button onClick={() => {
+                                dispatch(updateFriendRequest(item.id, 'ACCEPT_FRIEND_REQUEST'))
+                            }}>Accept</button>
+                        <button onClick={() => {
+                                dispatch(updateFriendRequest(item.id, 'REJECT_FRIEND_REQUEST'))
+                            }}>Reject</button>
+                    </div>
+                </div>
+            )
+        })
+    }
+
+    renderFriends(friendsArray) {
         if (!friendsArray) {
             return (
                 <div>Loading...</div>
             )
         }
 
+        const { dispatch } = this.props
+
         return friendsArray.map((item, i) => {
             return (
-                <div key={ i }>
-                    <Link to={ `/user/${item.id}` }>{ item.firstname }</Link>
-                    <br />
-                    <button onClick={() => {
-                            this.props.dispatch(updateFriendRequest(item.id, 'ACCEPT_FRIEND_REQUEST'))
-                        }}>Accept</button>
-                    <button onClick={() => {
-                            this.props.dispatch(updateFriendRequest(item.id, 'REJECT_FRIEND_REQUEST'))
-                        }}>Reject</button>
+                <div className="friends-card" key={ i }>
+
+                    <div className="friends-card-top" >
+                        <Link to={ `/user/${item.id}` }>
+                            <img src={ item.profilepic || 'http://via.placeholder.com/100x100' } />
+                        </Link>
+                        <Link to={ `/user/${item.id}` } className="full-name">{ item.firstname } { item.lastname }</Link>
+                    </div>
+
                 </div>
             )
         })
@@ -43,12 +77,12 @@ class Friends extends Component {
         const { pendingFriends, currentFriends } = this.props
 
         return (
-            <div>
+            <div className="page">
                 <h1>Friends</h1>
 
                 <div id="pending-friends-container">
                     <h2>Pending Friend Requests</h2>
-                    { this.renderFriends(pendingFriends) }
+                    { this.renderPending(pendingFriends) }
                 </div>
 
                 <div id="current-friends-container">

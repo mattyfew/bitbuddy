@@ -45,7 +45,7 @@ class OtherProfile extends Component {
         }, user, dispatch } = this.props
 
         return (
-            <div>
+            <div className="page">
                 <h1>Other Profile</h1>
                 <section id="profile-info">
                     <div className="profile-left">
