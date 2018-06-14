@@ -46,7 +46,6 @@ class OtherProfile extends Component {
 
         return (
             <div className="page">
-                <h1>Other Profile</h1>
                 <section id="profile-info">
                     <div className="profile-left">
                         <h2>{username}</h2>

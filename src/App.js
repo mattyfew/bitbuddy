@@ -58,10 +58,12 @@ class App extends Component {
                          <div id="nav-container">
                              <nav className="bar">
                                  <Link to="/"><img id="fireball" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/500px-Bitcoin.svg.png" alt="logo" /></Link>
-                                 <ul>
-                                     <li><Link to="/">Home</Link></li>
+                                 <ul id="nav-left">
                                      <li><Link to="/chat">Chat</Link></li>
                                      <li><Link to="/friends">Friends</Link></li>
+                                 </ul>
+                                 <ul id="nav-right">
+                                     <li><a href="/">Profile</a></li>
                                      <li><a href="/logout">Logout</a></li>
                                  </ul>
                              </nav>

@@ -26,8 +26,6 @@ class OnlineFriends extends Component {
     render() {
         return (
             <div className="page">
-                <h1>OnlineFriends</h1>
-
                 <div className="online-friends-container">
                     { this.renderFriends() }
                 </div>

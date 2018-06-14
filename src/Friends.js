@@ -78,8 +78,6 @@ class Friends extends Component {
 
         return (
             <div className="page">
-                <h1>Friends</h1>
-
                 <div id="pending-friends-container">
                     <h2>Pending Friend Requests</h2>
                     { this.renderPending(pendingFriends) }
