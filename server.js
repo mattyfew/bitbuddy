@@ -113,11 +113,17 @@ io.on('connection', function(socket) {
     socket.on('disconnect', () => {
         console.log(`socket with the id ${socket.id} is now disconnected`)
 
-        onlineUsers = onlineUsers.filter(user => {
-            return user.userId != userId
+        const socketIsInList = onlineUsers.some(user => {
+            return user.socketId === socket.id
         })
 
-        socket.broadcast.emit('userLeft', userId)
+        if (socketIsInList) {
+            onlineUsers = onlineUsers.filter(user => {
+                return user.userId != userId
+            })
+
+            socket.broadcast.emit('userLeft', userId)
+        }
     })
 
     socket.on('chatMessage', msg => {
