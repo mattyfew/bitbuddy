@@ -80,27 +80,34 @@ io.on('connection', function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`)
 
     if (!socket.request.session || !socket.request.session.user) {
-        return socket.disconnect(true);
+        return socket.disconnect(true)
     }
     const userId = socket.request.session.user.id
 
-    onlineUsers.push({
-        userId,
-        socketId: socket.id
+    const userOnlineAlready = onlineUsers.some(user => {
+        return user.userId === userId
     })
+
+    if (!userOnlineAlready) {
+        onlineUsers.push({
+            userId,
+            socketId: socket.id
+        })
+
+        db.getUserInfo(userId)
+        .then(user => {
+            socket.broadcast.emit('userJoined', user)
+        })
+    }
 
     Promise.all([
         getOnlineUsers(),
         db.getChatMessages()
     ])
     .then(([ onlineUsersObj, messages ]) => {
+        console.log(onlineUsers);
         socket.emit('onlineUsers', onlineUsersObj)
         socket.emit('chatMessages', messages)
-    })
-
-    db.getUserInfo(userId)
-    .then(user => {
-        socket.broadcast.emit('userJoined', user)
     })
 
     socket.on('disconnect', () => {
