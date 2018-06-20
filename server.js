@@ -85,7 +85,7 @@ io.on('connection', function(socket) {
     const userId = socket.request.session.user.id
 
     const socketOnlineAlready = onlineUsers.some(user => user.userId === userId)
-    
+
     if (!socketOnlineAlready) {
         onlineUsers.push({ userId, socketId: socket.id })
 
@@ -119,13 +119,17 @@ io.on('connection', function(socket) {
             db.getUserInfo(msg.userId)
         ])
         .then(([ chatMsg, userInfo ]) => {
+            console.log("msg",chatMsg, userInfo);
             const chatObj = Object.assign({}, chatMsg, {
                 firstname: userInfo.firstname,
                 lastname: userInfo.lastname,
                 email: userInfo.email,
                 username: userInfo.username,
-                profilepic: userInfo.profilepic
+                profilepic: userInfo.profilepic,
+                msg_id: chatMsg.id
             })
+
+            console.log(chatObj);
 
             io.sockets.emit('chatMessage', chatObj)
         })

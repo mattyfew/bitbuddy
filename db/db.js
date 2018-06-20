@@ -289,8 +289,8 @@ exports.newChatMessage = function(text, authorId) {
 exports.getChatMessages = function() {
     return new Promise(function(resolve, reject) {
         const q = `
-            SELECT users.id, users.firstname, users.lastname, users.email, users.username, users.profilepic,
-                   chat_messages.text, chat_messages.created_at
+            SELECT users.id AS author_id, users.firstname, users.lastname, users.email, users.username, users.profilepic,
+                   chat_messages.id AS msg_id, chat_messages.text, chat_messages.created_at
             FROM chat_messages
             JOIN users
             ON chat_messages.author_id = users.id

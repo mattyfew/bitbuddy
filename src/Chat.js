@@ -54,8 +54,8 @@ class Chat extends Component {
             return (<div>Loading...</div>)
         }
 
-        return this.props.chatMessages.map((chatMessage, i) =>
-            <ChatMessage key={ i } chatMessage={ chatMessage } />
+        return this.props.chatMessages.map(chatMessage =>
+            <ChatMessage key={ chatMessage.msg_id } chatMessage={ chatMessage } />
         )
     }
 
