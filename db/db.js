@@ -263,3 +263,44 @@ exports.getFriends = function(userId) {
 
     })
 }
+
+// ==================================================================
+//                           CHAT MESSAGES
+// ==================================================================
+
+exports.newChatMessage = function(text, authorId) {
+    return new Promise(function(resolve, reject) {
+        const q = `
+            INSERT INTO chat_messages (text, author_id)
+            VALUES ($1, $2)
+            RETURNING *
+        `
+        const params = [ text, authorId ]
+
+        db.query(q, params)
+        .then(results => resolve(results.rows[0]))
+        .catch(e => {
+            console.log("There was an error in newChatMessage", e)
+            reject(e)
+        })
+    })
+}
+
+exports.getChatMessages = function() {
+    return new Promise(function(resolve, reject) {
+        const q = `
+            SELECT users.id, users.firstname, users.lastname, users.email, users.username, users.profilepic,
+                   chat_messages.text, chat_messages.created_at
+            FROM chat_messages
+            JOIN users
+            ON chat_messages.author_id = users.id
+        `
+
+        db.query(q)
+        .then(results => resolve(results.rows))
+        .catch(e => {
+            console.log("There was an error in getChatMessages", e)
+            reject(e)
+        })
+    })
+}

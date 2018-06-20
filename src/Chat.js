@@ -86,14 +86,14 @@ const ChatForm = props => {
 const ChatMessage = ({ chatMessage }) => {
     return (
         <div className="chat-message">
-            <Link to={`/user/${chatMessage.userId}`} >
+            <Link to={`/user/${chatMessage.author_id}`} >
                 <img src="http://via.placeholder.com/100x100" className="chat-avatar" alt="user-image"/>
             </Link>
             <div className="msg">
                 {/*<date>21:46 10/15/2018</date>*/}
 
-                <Link to={`/user/${chatMessage.userId}`} >
-                    <span className="chat-message-username">{ chatMessage.username }</span>
+                <Link to={`/user/${chatMessage.author_id}`} >
+                    <span className="chat-message-username">{ chatMessage.text }</span>
                 </Link>
                 { chatMessage.text }
             </div>

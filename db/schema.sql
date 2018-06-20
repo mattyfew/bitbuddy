@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS friendships;
+DROP TABLE IF EXISTS chat_messages;
 
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
@@ -10,7 +11,7 @@ CREATE TABLE users(
     password VARCHAR(100),
     profilepic TEXT,
     bio TEXT,
-    create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE friendships (
@@ -20,4 +21,11 @@ CREATE TABLE friendships (
     status INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE chat_messages (
+    id SERIAL PRIMARY KEY,
+    text TEXT,
+    author_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

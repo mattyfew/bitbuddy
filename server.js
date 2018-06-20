@@ -65,21 +65,12 @@ app.use(express.static('public'))
 // ====================== SOCKET.IO =====================
 // ======================================================
 
-let onlineUsers = [], messages = [];
-
-messages = [
-    {
-        userId: 2,
-        username: 'miko',
-        text: 'chatchatchatchatchatchat',
-        profilepic: null
-    }
-]
+let onlineUsers = []
 
 const getOnlineUsers = () => {
     let ids = onlineUsers.map(user => user.userId)
 
-    ids = ids.filter((id, i) =>  {
+    ids = ids.filter((id, i) => {
         return ids.indexOf(id) == i
     })
     return db.getUsersByIds(ids)
@@ -98,15 +89,18 @@ io.on('connection', function(socket) {
         socketId: socket.id
     })
 
-    getOnlineUsers()
-    .then(onlineUsersObj => {
+    Promise.all([
+        getOnlineUsers(),
+        db.getChatMessages()
+    ])
+    .then(([ onlineUsersObj, messages ]) => {
         socket.emit('onlineUsers', onlineUsersObj)
+        console.log("this work?", messages);
         socket.emit('chatMessages', messages)
     })
 
     db.getUserInfo(userId)
     .then(user => {
-        // this should probably be broadcast
         socket.broadcast.emit('userJoined', user)
     })
 
