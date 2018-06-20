@@ -84,20 +84,13 @@ io.on('connection', function(socket) {
     }
     const userId = socket.request.session.user.id
 
-    const userOnlineAlready = onlineUsers.some(user => {
-        return user.userId === userId
-    })
-
-    if (!userOnlineAlready) {
-        onlineUsers.push({
-            userId,
-            socketId: socket.id
-        })
+    const socketOnlineAlready = onlineUsers.some(user => user.userId === userId)
+    
+    if (!socketOnlineAlready) {
+        onlineUsers.push({ userId, socketId: socket.id })
 
         db.getUserInfo(userId)
-        .then(user => {
-            socket.broadcast.emit('userJoined', user)
-        })
+        .then(user => socket.broadcast.emit('userJoined', user))
     }
 
     Promise.all([
@@ -105,7 +98,6 @@ io.on('connection', function(socket) {
         db.getChatMessages()
     ])
     .then(([ onlineUsersObj, messages ]) => {
-        console.log(onlineUsers);
         socket.emit('onlineUsers', onlineUsersObj)
         socket.emit('chatMessages', messages)
     })
@@ -113,22 +105,15 @@ io.on('connection', function(socket) {
     socket.on('disconnect', () => {
         console.log(`socket with the id ${socket.id} is now disconnected`)
 
-        const socketIsInList = onlineUsers.some(user => {
-            return user.socketId === socket.id
-        })
+        const socketInList = onlineUsers.some(user => user.socketId === socket.id)
 
-        if (socketIsInList) {
-            onlineUsers = onlineUsers.filter(user => {
-                return user.userId != userId
-            })
-
+        if (socketInList) {
+            onlineUsers = onlineUsers.filter(user => user.userId != userId)
             socket.broadcast.emit('userLeft', userId)
         }
     })
 
     socket.on('chatMessage', msg => {
-        console.log('incoming msg', msg)
-
         Promise.all([
             db.newChatMessage(msg.text, msg.userId),
             db.getUserInfo(msg.userId)
