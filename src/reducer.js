@@ -89,12 +89,12 @@ export function reducer(state = INITIAL_STATE, action) {
     }
 
     if (action.type == 'USER_JOINED') {
-        // TODO: THIS!!
-        // console.log("inside USER_JOINED", action);
-        const newUsers = state.onlineUsers.push(action.user)
+        console.log("inside USER_JOINED", action);
+        const copy = state.onlineUsers.slice()
+        copy.push(action.user)
 
         state = Object.assign({}, state, {
-
+            onlineUsers: copy
         })
     }
 

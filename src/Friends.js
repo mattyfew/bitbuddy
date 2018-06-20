@@ -93,6 +93,7 @@ class Friends extends Component {
 }
 
 function mapStateToProps(state) {
+    console.log(state);
     return {
         currentFriends: state.currentFriends,
         pendingFriends: state.pendingFriends

@@ -96,7 +96,6 @@ exports.saveImage = function(filename, email) {
 }
 
 exports.getUsersByIds = function(ids) {
-    console.log("ids", ids);
     const q = `
         SELECT id, firstname, lastname, email, username, profilepic
         FROM users
@@ -105,7 +104,6 @@ exports.getUsersByIds = function(ids) {
 
     return db.query(q, params)
     .then(results => {
-        console.log(results.rows);
         return results.rows
     })
     .catch(e => {

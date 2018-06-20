@@ -87,6 +87,7 @@ const getOnlineUsers = () => {
 
 io.on('connection', function(socket) {
     console.log(`socket with the id ${socket.id} is now connected`)
+
     if (!socket.request.session || !socket.request.session.user) {
         return socket.disconnect(true);
     }
@@ -105,7 +106,8 @@ io.on('connection', function(socket) {
 
     db.getUserInfo(userId)
     .then(user => {
-        socket.emit('userJoined', user)
+        // this should probably be broadcast
+        socket.broadcast.emit('userJoined', user)
     })
 
     socket.on('disconnect', () => {
@@ -115,38 +117,13 @@ io.on('connection', function(socket) {
             return user.userId != userId
         })
 
-        console.log("newOnlineUsers", onlineUsers)
         socket.broadcast.emit('userLeft', userId)
     })
 
     socket.on('chatMessage', msgData => {
-
-        console.log("inside chatMessage whatup", msgData)
         messages.push(msgData)
         io.sockets.emit('chatMessage', msgData)
     })
-
-    // some() returns a boolean based on if one of the elements in the
-    // array passes the condition specified in the callback.
-    // we use it here to check if the socket.id is already in the list of
-    // online users, we don't want them to go any farther
-    // if (onlineUsers.some(item => item.socketId == socket.id)) { return }
-
-
-    // socket.emit('chats', messages)
-
-    // socket.on('chat', msg => {
-    //     const sender = onlineUsers.find(user => user.socketId == socket.id)
-    //
-    //     db.getUsersByIds([ sender.id ]).then(([data]) => {
-    //         let singleChatMessage = data
-    //         singleChatMessage.message = msg.message
-    //         singleChatMessage.timestamp = new Date().toLocaleString()
-    //         messages.push(singleChatMessage)
-    //         messages = messages.slice(-10) // limits to just 10 messages
-    //         io.sockets.emit('chat', singleChatMessage)
-    //     })
-    // })
 })
 
 app.use('/', require('./friendships'))
@@ -162,7 +139,6 @@ app.post('/register-new-user', (req, res) => {
     } else {
         db.registerNewUser(firstname, lastname, username, email, password)
         .then(id => {
-            console.log("in here", id);
             req.session.user = { id, firstname, lastname, username, email }
             res.json({ success: true })
         })
@@ -219,7 +195,6 @@ app.get('/get-other-user-info/:userId', (req, res) => {
             sender: friendshipStatus.sender,
             recipient: friendshipStatus.recipient
         })
-        console.log("otherUser data: ", newObj)
         res.json(newObj)
     })
     .catch(e => console.log('There was an error in /get-other-user-info', e))

@@ -64,6 +64,7 @@ export function updateFriendRequest(otherUserId, action) {
 export function getFriends() {
     return axios.get('/get-friends')
         .then(resp => {
+            console.log("action", resp.data);
             return {
                 type: 'GET_FRIENDS',
                 friends: resp.data.friends
@@ -78,6 +79,7 @@ export function getFriends() {
 // =======================================
 
 export function onlineUsers(users) {
+    console.log("onlineUsers", users);
     return {
         type: 'ONLINE_USERS',
         users
@@ -85,6 +87,8 @@ export function onlineUsers(users) {
 }
 
 export function userJoined(user) {
+    console.log("userJoined", user);
+
     return {
         type: 'USER_JOINED',
         user
@@ -92,6 +96,8 @@ export function userJoined(user) {
 }
 
 export function userLeft(userId) {
+    console.log("userLeft", userId);
+
     return {
         type: 'USER_LEFT',
         userId

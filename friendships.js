@@ -20,7 +20,6 @@ router.post('/update-friend-request', (req, res) => {
 router.get('/get-friends', (req, res) => {
     db.getFriends(req.session.user.id)
     .then(friends => {
-        console.log("results from getFriends", friends)
         res.json({ friends })
     })
 })
