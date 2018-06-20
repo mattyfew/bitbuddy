@@ -93,7 +93,7 @@ const ChatMessage = ({ chatMessage }) => {
                 {/*<date>21:46 10/15/2018</date>*/}
 
                 <Link to={`/user/${chatMessage.author_id}`} >
-                    <span className="chat-message-username">{ chatMessage.text }</span>
+                    <span className="chat-message-username">{ chatMessage.username }</span>
                 </Link>
                 { chatMessage.text }
             </div>

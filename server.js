@@ -95,7 +95,6 @@ io.on('connection', function(socket) {
     ])
     .then(([ onlineUsersObj, messages ]) => {
         socket.emit('onlineUsers', onlineUsersObj)
-        console.log("this work?", messages);
         socket.emit('chatMessages', messages)
     })
 
@@ -114,9 +113,24 @@ io.on('connection', function(socket) {
         socket.broadcast.emit('userLeft', userId)
     })
 
-    socket.on('chatMessage', msgData => {
-        messages.push(msgData)
-        io.sockets.emit('chatMessage', msgData)
+    socket.on('chatMessage', msg => {
+        console.log('incoming msg', msg)
+
+        Promise.all([
+            db.newChatMessage(msg.text, msg.userId),
+            db.getUserInfo(msg.userId)
+        ])
+        .then(([ chatMsg, userInfo ]) => {
+            const chatObj = Object.assign({}, chatMsg, {
+                firstname: userInfo.firstname,
+                lastname: userInfo.lastname,
+                email: userInfo.email,
+                username: userInfo.username,
+                profilepic: userInfo.profilepic
+            })
+
+            io.sockets.emit('chatMessage', chatObj)
+        })
     })
 })
 
