@@ -50,9 +50,12 @@ class Profile extends Component {
         return (
             <div className="page">
                 <section id="profile-info">
+                    <img onClick={ this.toggleShowUploadImage } src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
+                    <h2>{username}</h2>
+                    <p>{ firstname } { lastname }</p>
+                    <p>Email: { email }</p>
+
                     <div className="profile-left">
-                        <h2>{username}</h2>
-                        <img onClick={ this.toggleShowUploadImage } src="http://www.gjermundbjaanes.com/img/posts/blockchain/lisk_logo.jpg" alt="profile-pic"/>
 
                         { this.state.showUploadImage &&
                             <form onSubmit={ this.handleSubmitImg }>
@@ -63,9 +66,7 @@ class Profile extends Component {
                     </div>
 
                     <div className="profile-right">
-                        <p>Name: { firstname } { lastname }</p>
-                        <p>Email: { email }</p>
-                        <p>Username: { username }</p>
+
 
                         { bio
                             ? <p className="edit-bio" onClick={ this.toggleBio }>Bio: { bio } <i className="fas fa-pencil-alt"></i></p>
@@ -74,6 +75,7 @@ class Profile extends Component {
 
                         { this.state.showBioForm &&
                             <React.Fragment>
+                                <p onClick={ this.toggleBio }>Cancel</p>
                                 <textarea name="bio" id="bio" defaultValue={ bio } ref={ elem => this.newBio = elem } />
                                 <button onClick={ this.handleSubmitBio }>Submit Changes</button>
                             </React.Fragment>

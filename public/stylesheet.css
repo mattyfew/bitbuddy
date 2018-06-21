@@ -92,7 +92,11 @@ nav li { padding-right: 15px; }
 /* Profile
 ============================*/
 
-#banner {
+#profile-info {
+    text-align: center;
+}
+
+/* #banner {
     max-width: 1200px;
 }
 
@@ -116,7 +120,7 @@ nav li { padding-right: 15px; }
 .edit-bio:hover {
     cursor: pointer;
     font-weight: 700;
-}
+} */
 
 /* Chat
 ============================*/
