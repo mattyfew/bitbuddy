@@ -7,7 +7,7 @@ label {
     display: block;
     width: 150px;
 }
-label:after { content: ": " }
+/* label:after { content: ": " } */
 
 
 
@@ -96,31 +96,76 @@ nav li { padding-right: 15px; }
     text-align: center;
 }
 
-/* #banner {
-    max-width: 1200px;
+/* #upload-modal {} */
+
+#overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: black;
+    overflow-y: auto;
+    opacity: 0.5;
 }
 
-#profile-info {
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    max-width: 1000px;
-    margin: 0 auto;
-    background-color: #16a085;
-    border-radius: 17px;
+#upload-form-container {
+    background-color: #C4C4C4;
+    padding: 64px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: auto;
 }
-.profile-left {
-    padding: 20px 40px;
-    text-align: center;
+
+#upload-form-container h3 {
+    font-size: 24px;
+
 }
-.profile-right {
-    background-color: #bdc3c7;
-    padding: 25px 40px;
-    border-radius: 0 17px 17px 0;
+#upload-form-container form input {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
 }
-.edit-bio:hover {
-    cursor: pointer;
+
+#image-upload-input + label {
+    font-size: 1.25em;
     font-weight: 700;
-} */
+    color: white;
+    background-color: #9b59b6;
+    display: inline-block;
+    cursor: pointer;
+    padding: 24px 32px;
+}
+#image-upload-input + label > svg, #image-upload-input + label span {
+    color: white;
+    fill: white;
+}
+#image-upload-input + label > svg {
+    margin-right: 8px;
+}
+
+#upload-form-container button {
+    display: block;
+    padding: 22px 64px;
+    margin: 16px auto 0;
+    width: 79%;
+    font-size: 24px;
+    font-weight: 600;
+    background-color: white;
+}
+
+#image-upload-input:focus + label,
+#image-upload-input + label:hover {
+    background-color: #8000B5;
+    /* outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px */
+}
+
 
 /* Chat
 ============================*/
